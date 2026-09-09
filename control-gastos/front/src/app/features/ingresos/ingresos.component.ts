@@ -66,7 +66,7 @@ export class IngresosComponent implements OnInit {
   navItems: NavItem[] = [
     { icon: 'grid', label: 'Vista General', route: '/dashboard' },
     { icon: 'in', label: 'Ingresos', active: true, route: '/ingresos' },
-    { icon: 'out', label: 'Egresos' },
+    { icon: 'out', label: 'Egresos', route: '/egresos' },
     { icon: 'coffee', label: 'Pequeños Consumos' },
   ];
   navItemsSecondary: NavItem[] = [
