@@ -1,0 +1,378 @@
+<div class="shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="assets/images/Logo-gastos-sinfondo.png" alt="Control de Gastos" class="brand__logo" />
+      <span class="brand__name">Control<br />de gastos</span>
+    </div>
+
+    <nav class="nav">
+      <div class="nav__group">
+        <a *ngFor="let item of navItems" class="nav__item" [routerLink]="item.route ?? null" [class.nav__item--active]="item.active">
+          <span class="nav__icon" [ngSwitch]="item.icon" [class.nav__icon--in]="item.icon === 'in'" [class.nav__icon--out]="item.icon === 'out'" [class.nav__icon--coffee]="item.icon === 'coffee'">
+            <svg *ngSwitchCase="'grid'" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/></svg>
+            <svg *ngSwitchCase="'in'" viewBox="0 0 24 24" fill="none"><path d="M12 6v10M8 12l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg *ngSwitchCase="'out'" viewBox="0 0 24 24" fill="none"><path d="M12 18V8M8 12l4-4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg *ngSwitchCase="'coffee'" viewBox="0 0 24 24" fill="none"><path d="M17.5 9h1a3.2 3.2 0 0 1 0 6.4h-1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M2.5 9h15v6.2a3.6 3.6 0 0 1-3.6 3.6h-7.8A3.6 3.6 0 0 1 2.5 15.2V9Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M6 5.2c0 .8-.9.8-.9 1.6M9.5 5.2c0 .8-.9.8-.9 1.6M13 5.2c0 .8-.9.8-.9 1.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </span>
+          <span>{{ item.label }}</span>
+        </a>
+      </div>
+
+      <div class="nav__divider"></div>
+
+      <div class="nav__group">
+        <a *ngFor="let item of navItemsSecondary" class="nav__item">
+          <span class="nav__icon" [ngSwitch]="item.icon">
+            <svg *ngSwitchCase="'list'" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 9h8M8 12.5h8M8 16h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <svg *ngSwitchCase="'chart-pie'" viewBox="0 0 24 24" fill="none"><path d="M12 3.5A8.5 8.5 0 1 0 20.5 12H12V3.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14.5 3.8A8.52 8.52 0 0 1 20.2 9.5H14.5V3.8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          </span>
+          <span>{{ item.label }}</span>
+        </a>
+      </div>
+
+      <div class="nav__divider"></div>
+
+      <div class="nav__group">
+        <a *ngFor="let item of navItemsTertiary" class="nav__item">
+          <span class="nav__icon" [ngSwitch]="item.icon">
+            <svg *ngSwitchCase="'chart-bar'" viewBox="0 0 24 24" fill="none"><path d="M5 19V10M12 19V5M19 19v-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <svg *ngSwitchCase="'bell'" viewBox="0 0 24 24" fill="none"><path d="M6 10a6 6 0 0 1 12 0v4l1.5 3h-15L6 14v-4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span>
+          <span>{{ item.label }}</span>
+        </a>
+      </div>
+
+      <div class="nav__divider nav__divider--push"></div>
+
+      <div class="nav__group">
+        <a *ngFor="let item of navItemsAccount" class="nav__item">
+          <span class="nav__icon" [ngSwitch]="item.icon">
+            <svg *ngSwitchCase="'user'" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.5" r="3.2" stroke="currentColor" stroke-width="1.6"/><path d="M5 19c1.2-3.2 4-4.8 7-4.8s5.8 1.6 7 4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <svg *ngSwitchCase="'gear'" viewBox="0 0 24 24" fill="none"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z" stroke="currentColor" stroke-width="1.6"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2.05 2.05 0 1 1-2.9 2.9l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21.1a2.05 2.05 0 0 1-4.1 0v-.1a1.7 1.7 0 0 0-1.11-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2.05 2.05 0 1 1-2.9-2.9l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.03H2.9a2.05 2.05 0 0 1 0-4.1H3a1.7 1.7 0 0 0 1.55-1.11 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2.05 2.05 0 1 1 2.9-2.9l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1.03-1.56V2.9a2.05 2.05 0 0 1 4.1 0V3a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2.05 2.05 0 1 1 2.9 2.9l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.56 1.03h.1a2.05 2.05 0 0 1 0 4.1H21a1.7 1.7 0 0 0-1.56 1.03Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          </span>
+          <span>{{ item.label }}</span>
+        </a>
+        <button class="nav__item nav__item--logout" (click)="logout()">
+          <span class="nav__icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M9 19H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M16 16l4-4-4-4M20 12H9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span>Cerrar sesión</span>
+        </button>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Header -->
+    <header class="topbar topbar--egresos">
+      <div class="topbar__page">
+        <span class="topbar__page-icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 20V7M7 12l5-5 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 4h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </span>
+        <div>
+          <h1 class="topbar__title">Egresos</h1>
+          <p class="topbar__subtitle">Revisa y controla todos tus gastos</p>
+        </div>
+      </div>
+      <div class="topbar__account">
+        <div class="topbar__account-text">
+          <strong>{{ user?.role === 'admin' ? 'Administrador' : 'Usuario' }}</strong>
+          <span>Mi Cuenta</span>
+        </div>
+        <div class="avatar">{{ (user?.name || 'U').charAt(0) }}</div>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- Fila 1: 4 KPIs -->
+      <section class="kpi-row">
+        <article class="kpi-card">
+          <div class="kpi-card__icon tone-pink">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M16 12h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M7 6V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="1.8"/></svg>
+          </div>
+          <div class="kpi-card__body">
+            <p class="kpi-card__label">Total de egresos</p>
+            <p class="kpi-card__note">Este mes</p>
+            <p class="kpi-card__amount">{{ totalEgresos }}</p>
+            <p class="kpi-card__trend" *ngIf="totalTrend">{{ totalTrend }}</p>
+          </div>
+        </article>
+
+        <article class="kpi-card">
+          <div class="kpi-card__icon tone-purple">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="15" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M4 10h16M9 3v4M15 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </div>
+          <div class="kpi-card__body">
+            <p class="kpi-card__label">Egresos registrados</p>
+            <p class="kpi-card__note">Este mes</p>
+            <p class="kpi-card__amount">{{ egresosRegistrados }}</p>
+            <p class="kpi-card__note">Transacciones</p>
+          </div>
+        </article>
+
+        <article class="kpi-card">
+          <div class="kpi-card__icon tone-blue">
+            <svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="6" rx="8" ry="3" stroke="currentColor" stroke-width="1.8"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6" stroke="currentColor" stroke-width="1.8"/><path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" stroke="currentColor" stroke-width="1.8"/></svg>
+          </div>
+          <div class="kpi-card__body">
+            <p class="kpi-card__label">Promedio diario</p>
+            <p class="kpi-card__note">Este mes</p>
+            <p class="kpi-card__amount">{{ promedioDiario }}</p>
+            <p class="kpi-card__note">Gasto promedio diario</p>
+          </div>
+        </article>
+
+        <!-- Tarjeta "Meta de egresos" con botón ✎ para editarla -->
+        <article class="kpi-card kpi-card--goal">
+          <div class="kpi-card__icon tone-teal">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3.5A8.5 8.5 0 1 0 20.5 12H12V3.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="kpi-card__body kpi-card__body--goal">
+            <div class="kpi-card__top">
+              <p class="kpi-card__label">Meta de egresos</p>
+              <button type="button" class="kpi-card__edit" title="Cambiar meta" (click)="openGoalModal()">✎</button>
+            </div>
+            <p class="kpi-card__note">Este mes</p>
+            <p class="kpi-card__amount">{{ metaLabel }}</p>
+            <div class="kpi-card__bar">
+              <span class="kpi-card__bar-fill" [class.kpi-card__bar-fill--warn]="metaPercent >= 85" [style.width.%]="metaPercent"></span>
+            </div>
+            <p class="kpi-card__note">{{ metaPercent }}% del límite</p>
+          </div>
+        </article>
+      </section>
+
+      <!-- Fila 2: evolución de egresos + distribución por categoría -->
+      <section class="row row--main">
+
+        <article class="panel panel--chart">
+          <div class="panel__header">
+            <h2>Evolución de egresos</h2>
+            <select class="dropdown" [value]="selectedMonthKey" (change)="onMonthChange($event)">
+              <option *ngFor="let m of availableMonths; trackBy: trackByMonthValue" [value]="m.value">{{ m.label }}</option>
+            </select>
+          </div>
+          <svg class="area-chart" viewBox="0 -10 700 220" preserveAspectRatio="none">
+            <g class="grid-lines">
+              <line x1="56" y1="0" x2="700" y2="0" stroke="#eef0f5" stroke-width="1"/>
+              <line x1="56" y1="50" x2="700" y2="50" stroke="#eef0f5" stroke-width="1"/>
+              <line x1="56" y1="100" x2="700" y2="100" stroke="#eef0f5" stroke-width="1"/>
+              <line x1="56" y1="150" x2="700" y2="150" stroke="#eef0f5" stroke-width="1"/>
+              <line x1="56" y1="200" x2="700" y2="200" stroke="#eef0f5" stroke-width="1"/>
+            </g>
+
+            <text x="46" y="6" text-anchor="end" class="axis-label">{{ yAxisLabels[0] }}</text>
+            <text x="46" y="56" text-anchor="end" class="axis-label">{{ yAxisLabels[1] }}</text>
+            <text x="46" y="106" text-anchor="end" class="axis-label">{{ yAxisLabels[2] }}</text>
+            <text x="46" y="156" text-anchor="end" class="axis-label">{{ yAxisLabels[3] }}</text>
+            <text x="46" y="204" text-anchor="end" class="axis-label">{{ yAxisLabels[4] }}</text>
+
+            <g transform="translate(56, 0)">
+              <path [attr.d]="chartPoints.area" fill="url(#areaFillEgresos)" stroke="none"/>
+              <path [attr.d]="chartPoints.line" fill="none" stroke="#EC4899" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <g *ngFor="let p of markerPoints"><circle [attr.cx]="p.x" [attr.cy]="p.y" r="3.5" fill="#fff" stroke="#EC4899" stroke-width="2"/></g>
+            </g>
+
+            <defs>
+              <linearGradient id="areaFillEgresos" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#EC4899" stop-opacity="0.22"/>
+                <stop offset="100%" stop-color="#EC4899" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="x-axis">
+            <span *ngFor="let point of xAxisTicks">{{ point.label }}</span>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel__header"><h2>Distribución de egresos por categoría</h2></div>
+          <div class="donut-block">
+            <div class="donut" [style.background]="donutGradient">
+              <div class="donut__hole">
+                <strong>{{ totalEgresos }}</strong>
+                <span>Total</span>
+              </div>
+            </div>
+            <ul class="donut-legend">
+              <li *ngFor="let slice of distribution">
+                <div class="donut-legend__top">
+                  <span class="donut-legend__dot" [style.background]="slice.color"></span>
+                  <span class="donut-legend__label">{{ slice.label }}</span>
+                  <span class="donut-legend__percent">{{ slice.percent }}%</span>
+                </div>
+                <span class="donut-legend__amount">{{ slice.amount }}</span>
+              </li>
+            </ul>
+          </div>
+        </article>
+
+      </section>
+
+      <!-- Fila 3: tabla de últimos egresos + registrar / categorías -->
+      <section class="row row--bottom">
+
+        <article class="panel panel--table">
+          <div class="panel__header">
+            <h2>Últimos egresos</h2>
+            <a class="panel__link" (click)="toggleShowAll()">{{ showAllExpenses ? 'Ver menos' : 'Ver todos' }}</a>
+          </div>
+          <table class="income-table" *ngIf="recentExpenses.length > 0">
+            <thead>
+              <tr>
+                <th>Descripción</th>
+                <th>Categoría</th>
+                <th>Fecha</th>
+                <th>Monto</th>
+                <th>Método de pago</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let expense of (showAllExpenses ? recentExpenses : recentExpenses.slice(0, 5))">
+                <td class="income-table__desc">
+                  <span class="income-icon income-icon--variable">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M12 18V8M8 12l4-4 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                  {{ expense.description }}
+                </td>
+                <td><span class="badge badge--category">{{ expense.category }}</span></td>
+                <td>{{ expense.date }}</td>
+                <td class="income-table__amount">Q {{ expense.amount.toLocaleString('es-GT', {minimumFractionDigits: 2, maximumFractionDigits: 2}) }}</td>
+                <td>{{ expense.method }}</td>
+                <td class="income-table__actions">
+                  <button type="button" class="icon-btn" title="Editar" (click)="openEditModal(expense)">✎</button>
+                  <button type="button" class="icon-btn icon-btn--danger" title="Eliminar" (click)="deleteExpense(expense)">🗑</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="empty-state" *ngIf="recentExpenses.length === 0">Aún no tienes egresos registrados.</p>
+        </article>
+
+        <article class="panel panel--actions">
+          <button class="quick-actions__primary" (click)="openModal()">
+            <span class="quick-actions__primary-icon">+</span>
+            <span class="quick-actions__primary-text">
+              <strong>Registrar nuevo egreso</strong>
+              <small>Agrega un gasto manualmente</small>
+            </span>
+            <span class="quick-actions__chevron">›</span>
+          </button>
+
+          <div class="panel__header panel__header--tight"><h2>Categorías de gasto</h2></div>
+          <ul class="category-list">
+            <li *ngFor="let cat of distribution">
+              <span class="category-list__dot" [style.background]="cat.color"></span>
+              <span class="category-list__label">{{ cat.label }}</span>
+              <div class="category-list__right">
+                <span class="category-list__amount">{{ cat.amount }}</span>
+                <span class="category-list__percent">{{ cat.percent }}%</span>
+              </div>
+              <div class="category-list__bar">
+                <span class="category-list__bar-fill" [style.width.%]="cat.percent" [style.background]="cat.color"></span>
+              </div>
+            </li>
+          </ul>
+        </article>
+
+      </section>
+
+      <!-- Tip -->
+      <div class="tip-banner">
+        <span class="tip-banner__icon">💡</span>
+        <div class="tip-banner__text">
+          <strong>Mantén tus gastos bajo control</strong>
+          <p>Analiza tus hábitos de consumo y ajusta tu presupuesto para alcanzar tus metas.</p>
+        </div>
+        <span class="tip-banner__chevron">›</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal: registrar / editar egreso -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal__header">
+        <h2>{{ editingExpenseId ? 'Editar egreso' : 'Registrar nuevo egreso' }}</h2>
+        <button class="modal__close" (click)="closeModal()">✕</button>
+      </div>
+
+      <form [formGroup]="expenseForm" (ngSubmit)="submitExpense()" class="modal__form">
+
+        <label class="field">
+          <span>Descripción</span>
+          <input type="text" formControlName="description" placeholder="Ej. Supermercado" />
+          <small class="field__error" *ngIf="f['description'].invalid && f['description'].touched">La descripción debe tener al menos 3 caracteres.</small>
+        </label>
+
+        <div class="field-row">
+          <label class="field">
+            <span>Categoría</span>
+            <select formControlName="category">
+              <option *ngFor="let cat of currentCategories" [value]="cat">{{ cat }}</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Monto (Q)</span>
+            <input type="number" step="0.01" min="0" formControlName="amount" placeholder="0.00" />
+            <small class="field__error" *ngIf="f['amount'].invalid && f['amount'].touched">Ingresa un monto mayor a 0.</small>
+          </label>
+        </div>
+
+        <div class="field-row">
+          <label class="field">
+            <span>Método de pago</span>
+            <select formControlName="method">
+              <option *ngFor="let m of paymentMethods" [value]="m">{{ m }}</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Fecha</span>
+            <input type="date" formControlName="date" />
+          </label>
+        </div>
+
+        <div class="modal__actions">
+          <button type="button" class="btn-secondary" (click)="closeModal()">Cancelar</button>
+          <button type="submit" class="btn-primary" [disabled]="isSaving">{{ isSaving ? 'Guardando...' : (editingExpenseId ? 'Guardar cambios' : 'Guardar egreso') }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: cambiar meta de egresos -->
+  <div class="modal-overlay" *ngIf="showGoalModal" (click)="closeGoalModal()">
+    <div class="modal modal--sm" (click)="$event.stopPropagation()">
+      <div class="modal__header">
+        <h2>Cambiar meta de egresos</h2>
+        <button class="modal__close" (click)="closeGoalModal()">✕</button>
+      </div>
+
+      <form [formGroup]="goalForm" (ngSubmit)="submitGoal()" class="modal__form">
+
+        <label class="field">
+          <span>Límite mensual (Q)</span>
+          <input type="number" step="0.01" min="0" formControlName="amount" placeholder="0.00" />
+          <small class="field__error" *ngIf="g['amount'].invalid && g['amount'].touched">Ingresa un monto mayor a 0.</small>
+        </label>
+
+        <p class="field-hint">Este límite se compara contra tus egresos del mes actual para calcular la barra de progreso.</p>
+
+        <div class="modal__actions">
+          <button type="button" class="btn-secondary" (click)="closeGoalModal()">Cancelar</button>
+          <button type="submit" class="btn-primary" [disabled]="isSavingGoal">{{ isSavingGoal ? 'Guardando...' : 'Guardar meta' }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
