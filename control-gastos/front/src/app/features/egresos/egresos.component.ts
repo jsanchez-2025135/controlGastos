@@ -81,12 +81,13 @@ function noFutureDateValidator(): ValidatorFn {
 export class EgresosComponent implements OnInit {
   user: ReturnType<AuthService['getUser']>;
 
-  navItems: NavItem[] = [
+      navItems: NavItem[] = [
     { icon: 'grid', label: 'Vista General', route: '/dashboard' },
     { icon: 'in', label: 'Ingresos', route: '/ingresos' },
     { icon: 'out', label: 'Egresos', active: true, route: '/egresos' },
-    { icon: 'coffee', label: 'Pequeños Consumos' },
+    { icon: 'coffee', label: 'Pequeños Consumos', route: '/pequenos-consumos' },
   ];
+
   navItemsSecondary: NavItem[] = [
     { icon: 'list', label: 'Transacciones' },
     { icon: 'chart-pie', label: 'Presupuestos' },
@@ -100,13 +101,14 @@ export class EgresosComponent implements OnInit {
     { icon: 'gear', label: 'Ajustes' },
   ];
 
-  readonly categories: ExpenseCategory[] = ['Alimentación', 'Transporte', 'Vivienda', 'Servicios', 'Otros'];
-  readonly categoryColors: Record<ExpenseCategory, string> = {
+    readonly categories: ExpenseCategory[] = ['Alimentación', 'Transporte', 'Vivienda', 'Servicios', 'Otros', 'Pequeños consumos'];
+    readonly categoryColors: Record<ExpenseCategory, string> = {
     Alimentación: '#12B5A0',
     Transporte: '#5B4FE8',
     Vivienda: '#3B82F6',
     Servicios: '#8B5CF6',
     Otros: '#C084FC',
+    'Pequeños consumos': '#F59E0B',
   };
   readonly paymentMethods = ['Efectivo', 'Transferencia', 'Depósito'];
 
