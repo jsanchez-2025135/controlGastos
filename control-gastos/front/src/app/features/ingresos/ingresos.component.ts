@@ -83,12 +83,13 @@ function noFutureDateValidator(): ValidatorFn {
 export class IngresosComponent implements OnInit {
   user: ReturnType<AuthService['getUser']>;
 
-  navItems: NavItem[] = [
+      navItems: NavItem[] = [
     { icon: 'grid', label: 'Vista General', route: '/dashboard' },
     { icon: 'in', label: 'Ingresos', active: true, route: '/ingresos' },
     { icon: 'out', label: 'Egresos', route: '/egresos' },
-    { icon: 'coffee', label: 'Pequeños Consumos' },
+    { icon: 'coffee', label: 'Pequeños Consumos', route: '/pequenos-consumos' },
   ];
+  
   navItemsSecondary: NavItem[] = [
     { icon: 'list', label: 'Transacciones' },
     { icon: 'chart-pie', label: 'Presupuestos' },
