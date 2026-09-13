@@ -313,6 +313,8 @@
 
       <form [formGroup]="expenseForm" (ngSubmit)="submitExpense()" class="modal__form">
 
+        <div class="modal__error-banner" *ngIf="expenseFormError">{{ expenseFormError }}</div>
+
         <label class="field">
           <span>Descripción</span>
           <input type="text" formControlName="description" placeholder="Ej. Supermercado" />
