@@ -172,23 +172,14 @@
 .quick-actions__primary-text small { font-size: 0.72rem; color: rgba(255, 255, 255, 0.85); }
 .quick-actions__chevron { color: rgba(255, 255, 255, 0.85); font-size: 1.1rem; }
 
-/* --- NUEVO: lista "Categorías de gasto" con barra de progreso por categoría --- */
-.category-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.85rem; }
-.category-list li {
-  display: grid;
-  grid-template-columns: 12px 1fr auto;
-  align-items: center;
-  column-gap: 0.55rem;
-  row-gap: 0.3rem;
-  font-size: 0.8rem;
-}
-.category-list__dot { width: 10px; height: 10px; border-radius: 50%; }
-.category-list__label { color: var(--text-dark); font-weight: 600; }
-.category-list__right { display: flex; align-items: baseline; gap: 0.4rem; justify-self: end; }
-.category-list__amount { color: var(--text-dark); font-weight: 700; font-size: 0.78rem; }
-.category-list__percent { color: var(--text-muted); font-size: 0.72rem; }
-.category-list__bar { grid-column: 1 / -1; height: 5px; border-radius: 6px; background: #eef0f5; overflow: hidden; }
-.category-list__bar-fill { display: block; height: 100%; border-radius: 6px; }
+/* --- NUEVO: "Resumen rápido" (reemplaza la lista de categorías duplicada) --- */
+.quick-stat { display: flex; flex-direction: column; gap: 0.3rem; padding: 0.75rem 0; border-bottom: 1px solid #eef0f5; }
+.quick-stat:last-of-type { border-bottom: none; }
+.quick-stat__label { font-size: 0.72rem; color: var(--text-muted); }
+.quick-stat__row { display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem; }
+.quick-stat__value { font-size: 0.85rem; color: var(--text-dark); }
+.quick-stat__badge { font-size: 0.72rem; font-weight: 700; color: var(--pink); background: #fde8f1; padding: 0.15rem 0.5rem; border-radius: 20px; flex-shrink: 0; }
+.quick-stat__note { font-size: 0.72rem; color: var(--text-muted); }
 
 /* --- NUEVO: banner de consejo al final de la página --- */
 .tip-banner { display: flex; align-items: center; gap: 0.9rem; background: #eaf2ff; border: 1px solid #d7e6ff; border-radius: 14px; padding: 1rem 1.2rem; }
