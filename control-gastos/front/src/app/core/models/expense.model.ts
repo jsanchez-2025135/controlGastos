@@ -1,4 +1,4 @@
-export type ExpenseCategory = 'Alimentación' | 'Transporte' | 'Vivienda' | 'Servicios' | 'Otros';
+export type ExpenseCategory = 'Alimentación' | 'Transporte' | 'Vivienda' | 'Servicios' | 'Otros' | 'Pequeños consumos';
 
 export interface Expense {
   id: string;
