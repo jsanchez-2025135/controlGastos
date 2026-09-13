@@ -13,7 +13,7 @@ export class InsufficientBalanceError extends Error {
   }
 }
 
-const VALID_CATEGORIES: ExpenseCategory[] = ['Alimentación', 'Transporte', 'Vivienda', 'Servicios', 'Otros'];
+const VALID_CATEGORIES: ExpenseCategory[] = ['Alimentación', 'Transporte', 'Vivienda', 'Servicios', 'Otros', 'Pequeños consumos'];
 
 interface CreateExpenseDto {
   userId: string;
