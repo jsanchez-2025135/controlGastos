@@ -30,6 +30,9 @@ export class ExpenseController {
 
       return created(res, expense, 'Egreso registrado');
     } catch (error) {
+      if (error instanceof Error && error.message === 'DATE_FUTURE_NOT_ALLOWED') {
+        return badRequest(res, 'No puedes registrar un egreso con fecha futura');
+      }
       if (error instanceof Error && ['DESCRIPTION_INVALID', 'AMOUNT_INVALID', 'CATEGORY_INVALID', 'DATE_INVALID'].includes(error.message)) {
         return badRequest(res, 'Datos del egreso inválidos');
       }
@@ -54,6 +57,9 @@ export class ExpenseController {
 
       return ok(res, expense, 'Egreso actualizado');
     } catch (error) {
+      if (error instanceof Error && error.message === 'DATE_FUTURE_NOT_ALLOWED') {
+        return badRequest(res, 'No puedes registrar un egreso con fecha futura');
+      }
       if (error instanceof Error && ['DESCRIPTION_INVALID', 'AMOUNT_INVALID', 'CATEGORY_INVALID', 'DATE_INVALID'].includes(error.message)) {
         return badRequest(res, 'Datos del egreso inválidos');
       }
