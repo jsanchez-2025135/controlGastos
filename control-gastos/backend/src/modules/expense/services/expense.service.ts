@@ -14,11 +14,25 @@ interface CreateExpenseDto {
 
 type UpdateExpenseDto = Omit<CreateExpenseDto, 'userId'>;
 
+// Fecha de HOY en el servidor, en formato YYYY-MM-DD (comparable como string
+// porque el formato es ISO). Es un control de día por día: no se acepta
+// ninguna fecha posterior al día actual (sí se acepta hoy o una fecha pasada).
+const todayIso = (): string => {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+};
+
+const isValidDateFormat = (date: string): boolean => /^\d{4}-\d{2}-\d{2}$/.test(date);
+
 const validate = (dto: UpdateExpenseDto): void => {
   if (!dto.description || dto.description.trim().length < 3) throw new Error('DESCRIPTION_INVALID');
   if (!dto.amount || dto.amount <= 0) throw new Error('AMOUNT_INVALID');
   if (!VALID_CATEGORIES.includes(dto.category)) throw new Error('CATEGORY_INVALID');
-  if (!dto.date) throw new Error('DATE_INVALID');
+  if (!dto.date || !isValidDateFormat(dto.date)) throw new Error('DATE_INVALID');
+  if (dto.date > todayIso()) throw new Error('DATE_FUTURE_NOT_ALLOWED');
 };
 
 export interface ExpenseSummary {
