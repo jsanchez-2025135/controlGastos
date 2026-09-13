@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { IncomeService } from '../../core/services/income.service';
@@ -51,6 +51,26 @@ interface GroupSummary {
   amount: string;
   count: number;
   percent: number;
+}
+
+// Fecha de HOY en horario LOCAL del usuario, en formato YYYY-MM-DD.
+// OJO: no usar new Date().toISOString() aquí, porque esa convierte a UTC
+// y en Guatemala (UTC-6) puede adelantar la fecha un día durante la tarde/noche.
+function localTodayIso(): string {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+// Validador de formulario: no permite fechas posteriores al día actual.
+// Sí permite hoy o cualquier fecha pasada.
+function noFutureDateValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value) return null;
+    return control.value > localTodayIso() ? { futureDate: true } : null;
+  };
 }
 
 @Component({
@@ -245,7 +265,7 @@ verTodosIngresos(): void {
       category: ['Salario', [Validators.required]],
       amount: [null, [Validators.required, Validators.min(0.01)]],
       method: ['Transferencia', [Validators.required]],
-      date: [this.todayIso(), [Validators.required]],
+      date: [this.todayIso(), [Validators.required, noFutureDateValidator()]],
     });
 
     this.incomeForm.get('type')?.valueChanges.subscribe((type: 'Fijo' | 'Variable') => {
@@ -262,7 +282,13 @@ verTodosIngresos(): void {
   }
 
   private todayIso(): string {
-    return new Date().toISOString().slice(0, 10);
+    return localTodayIso();
+  }
+
+  // Usado en el template para poner max="..." en el <input type="date">,
+  // así el selector de fecha del navegador ni siquiera deja elegir un día futuro.
+  get maxDate(): string {
+    return this.todayIso();
   }
 
   loadIncomes(): void {
