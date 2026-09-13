@@ -1,5 +1,17 @@
 import { expenseRepository } from '../models/expense.repository';
 import { Expense, ExpenseCategory } from '../models/expense.model';
+import { incomeRepository } from '@modules/income/models/income.repository';
+
+// Error específico para cuando el egreso supera el saldo disponible
+// (ingresos totales - egresos ya registrados). El controller lo detecta
+// con "instanceof" y arma el mensaje que ve el usuario, incluyendo el
+// saldo disponible real para que el mensaje sea claro y no genérico.
+export class InsufficientBalanceError extends Error {
+  constructor(public readonly available: number) {
+    super('INSUFFICIENT_BALANCE');
+    this.name = 'InsufficientBalanceError';
+  }
+}
 
 const VALID_CATEGORIES: ExpenseCategory[] = ['Alimentación', 'Transporte', 'Vivienda', 'Servicios', 'Otros'];
 
@@ -35,6 +47,29 @@ const validate = (dto: UpdateExpenseDto): void => {
   if (dto.date > todayIso()) throw new Error('DATE_FUTURE_NOT_ALLOWED');
 };
 
+// Saldo disponible del usuario = total de ingresos - total de egresos ya
+// registrados. Si excludeExpenseId viene informado (caso "editar"), ese
+// egreso se excluye de la suma porque su monto anterior ya está contado
+// dentro de los egresos existentes y no debe restarse dos veces.
+const getAvailableBalance = async (userId: string, excludeExpenseId?: string): Promise<number> => {
+  const [incomes, expenses] = await Promise.all([
+    incomeRepository.findAllByUser(userId),
+    expenseRepository.findAllByUser(userId),
+  ]);
+
+  const totalIngresos = incomes.reduce((sum, i) => sum + i.amount, 0);
+  const totalEgresos = expenses
+    .filter((e) => e.id !== excludeExpenseId)
+    .reduce((sum, e) => sum + e.amount, 0);
+
+  return totalIngresos - totalEgresos;
+};
+
+const ensureSufficientBalance = async (userId: string, amount: number, excludeExpenseId?: string): Promise<void> => {
+  const available = await getAvailableBalance(userId, excludeExpenseId);
+  if (amount > available) throw new InsufficientBalanceError(available);
+};
+
 export interface ExpenseSummary {
   expenses: Expense[];
   totalEgresos: number;
@@ -67,6 +102,7 @@ export class ExpenseService {
 
   static async create(dto: CreateExpenseDto): Promise<Expense> {
     validate(dto);
+    await ensureSufficientBalance(dto.userId, dto.amount);
     return expenseRepository.create(dto);
   }
 
@@ -74,6 +110,7 @@ export class ExpenseService {
   // aquí el resultado: si viene null, o el id no existe o no es del usuario.
   static async update(id: string, userId: string, dto: UpdateExpenseDto): Promise<Expense> {
     validate(dto);
+    await ensureSufficientBalance(userId, dto.amount, id);
     const updated = await expenseRepository.update(id, userId, dto);
     if (!updated) throw new Error('EXPENSE_NOT_FOUND');
     return updated;
