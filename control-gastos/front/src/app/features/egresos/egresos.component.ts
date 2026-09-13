@@ -108,7 +108,7 @@ export class EgresosComponent implements OnInit {
     Servicios: '#8B5CF6',
     Otros: '#C084FC',
   };
-  readonly paymentMethods = ['Efectivo', 'Transferencia', 'Tarjeta de crédito', 'Depósito'];
+  readonly paymentMethods = ['Efectivo', 'Transferencia', 'Depósito'];
 
   // Límite mensual de referencia para la barra "Meta de egresos".
   // Ya NO es fijo: se carga desde /api/expense-goals al iniciar (loadExpenses)
@@ -232,6 +232,9 @@ export class EgresosComponent implements OnInit {
   expenseForm: FormGroup;
   isSaving = false;
   editingExpenseId: string | null = null;
+  // Mensaje de error que devuelve el backend al guardar (ej. saldo
+  // insuficiente). Se muestra como banner arriba del formulario.
+  expenseFormError: string | null = null;
 
   // ---------- NUEVO: modal / formulario de la meta de egresos ----------
   showGoalModal = false;
@@ -479,6 +482,7 @@ export class EgresosComponent implements OnInit {
 
   openModal(): void {
     this.editingExpenseId = null;
+    this.expenseFormError = null;
     this.expenseForm.reset({
       description: '',
       category: 'Alimentación',
@@ -494,6 +498,7 @@ export class EgresosComponent implements OnInit {
     if (!expense) return;
 
     this.editingExpenseId = expense.id;
+    this.expenseFormError = null;
     this.expenseForm.reset({
       description: expense.description,
       category: expense.category,
@@ -507,6 +512,7 @@ export class EgresosComponent implements OnInit {
   closeModal(): void {
     this.showModal = false;
     this.editingExpenseId = null;
+    this.expenseFormError = null;
   }
 
   submitExpense(): void {
@@ -516,6 +522,7 @@ export class EgresosComponent implements OnInit {
     }
 
     this.isSaving = true;
+    this.expenseFormError = null;
     const { description, category, amount, method, date } = this.expenseForm.value;
     const payload = { description, category, amount: Number(amount), method, date };
 
@@ -533,6 +540,9 @@ export class EgresosComponent implements OnInit {
       error: (err) => {
         console.error('Error guardando egreso', err);
         this.isSaving = false;
+        // El backend manda el mensaje ya listo para mostrar (ej. saldo
+        // insuficiente) en err.error.message. Si no viene, mensaje genérico.
+        this.expenseFormError = err?.error?.message || 'No se pudo guardar el egreso. Intenta de nuevo.';
       },
     });
   }
