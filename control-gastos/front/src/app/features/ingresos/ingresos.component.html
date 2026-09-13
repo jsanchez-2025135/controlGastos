@@ -359,9 +359,10 @@
             <small class="field__error" *ngIf="f['amount'].invalid && f['amount'].touched">Ingresa un monto mayor a 0.</small>
           </label>
 
-          <label class="field">
+         <label class="field">
             <span>Fecha</span>
-            <input type="date" formControlName="date" />
+            <input type="date" formControlName="date" [attr.max]="maxDate" />
+            <small class="field__error" *ngIf="f['date'].invalid && f['date'].touched">No puedes registrar una fecha futura. Usa hoy o una fecha anterior.</small>
           </label>
         </div>
 
