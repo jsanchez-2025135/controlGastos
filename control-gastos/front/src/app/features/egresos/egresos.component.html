@@ -164,7 +164,7 @@
               <line x1="56" y1="100" x2="700" y2="100" stroke="#eef0f5" stroke-width="1"/>
               <line x1="56" y1="150" x2="700" y2="150" stroke="#eef0f5" stroke-width="1"/>
               <line x1="56" y1="200" x2="700" y2="200" stroke="#eef0f5" stroke-width="1"/>
-            </g>
+            </g> 
 
             <text x="46" y="6" text-anchor="end" class="axis-label">{{ yAxisLabels[0] }}</text>
             <text x="46" y="56" text-anchor="end" class="axis-label">{{ yAxisLabels[1] }}</text>
@@ -229,7 +229,7 @@
                 <th>Categoría</th>
                 <th>Fecha</th>
                 <th>Monto</th>
-                <th>Método de pago</th>
+                <th>Método de pago</th> 
                 <th></th>
               </tr>
             </thead>
@@ -265,20 +265,27 @@
             <span class="quick-actions__chevron">›</span>
           </button>
 
-          <div class="panel__header panel__header--tight"><h2>Categorías de gasto</h2></div>
-          <ul class="category-list">
-            <li *ngFor="let cat of distribution">
-              <span class="category-list__dot" [style.background]="cat.color"></span>
-              <span class="category-list__label">{{ cat.label }}</span>
-              <div class="category-list__right">
-                <span class="category-list__amount">{{ cat.amount }}</span>
-                <span class="category-list__percent">{{ cat.percent }}%</span>
-              </div>
-              <div class="category-list__bar">
-                <span class="category-list__bar-fill" [style.width.%]="cat.percent" [style.background]="cat.color"></span>
-              </div>
-            </li>
-          </ul>
+          
+        <div class="panel__header panel__header--tight"><h2>Resumen rápido</h2></div>
+          <div class="quick-stat" *ngIf="topPaymentMethod as tpm">
+            <span class="quick-stat__label">Método de pago más usado</span>
+            <div class="quick-stat__row">
+              <strong class="quick-stat__value">{{ tpm.label }}</strong>
+              <span class="quick-stat__badge">{{ tpm.percent }}%</span>
+            </div>
+            <span class="quick-stat__note">{{ tpm.amount }} en {{ tpm.count }} egreso{{ tpm.count === 1 ? '' : 's' }} este mes</span>
+          </div>
+
+          <div class="quick-stat" *ngIf="highestExpense as he">
+            <span class="quick-stat__label">Egreso más alto del mes</span>
+            <div class="quick-stat__row">
+              <strong class="quick-stat__value">{{ he.description }}</strong>
+              <span class="quick-stat__badge">{{ he.amount }}</span>
+            </div>
+            <span class="quick-stat__note">{{ he.category }} · {{ he.date }}</span>
+          </div>
+
+          <p class="empty-state" *ngIf="!topPaymentMethod && !highestExpense">Aún no tienes egresos este mes para mostrar un resumen.</p>
         </article>
 
       </section>
@@ -337,7 +344,8 @@
 
           <label class="field">
             <span>Fecha</span>
-            <input type="date" formControlName="date" />
+            <input type="date" formControlName="date" [attr.max]="maxDate" />
+            <small class="field__error" *ngIf="f['date'].invalid && f['date'].touched">No puedes registrar una fecha futura. Usa hoy o una fecha anterior.</small>
           </label>
         </div>
 
