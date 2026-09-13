@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
@@ -28,6 +28,20 @@ interface ExpenseSlice {
   color: string;
 }
 
+interface TopPaymentMethodView {
+  label: string;
+  amount: string;
+  percent: number;
+  count: number;
+}
+
+interface HighestExpenseView {
+  description: string;
+  category: ExpenseCategory;
+  amount: string;
+  date: string;
+}
+
 interface RecentExpenseView {
   id: string;
   description: string;
@@ -35,6 +49,26 @@ interface RecentExpenseView {
   date: string;
   amount: number;
   method: string;
+}
+
+// Fecha de HOY en horario LOCAL del usuario, en formato YYYY-MM-DD.
+// OJO: no usar new Date().toISOString() aquí, porque esa convierte a UTC
+// y en Guatemala (UTC-6) puede adelantar la fecha un día durante la tarde/noche.
+function localTodayIso(): string {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+// Validador de formulario: no permite fechas posteriores al día actual.
+// Sí permite hoy o cualquier fecha pasada.
+function noFutureDateValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value) return null;
+    return control.value > localTodayIso() ? { futureDate: true } : null;
+  };
 }
 
 @Component({
@@ -99,6 +133,11 @@ export class EgresosComponent implements OnInit {
     percent: 0,
     color: this.categoryColors[cat],
   }));
+
+  // ---------- NUEVO: "Resumen rápido" (reemplaza la lista de categorías
+  // duplicada que ya se ve en la dona de arriba) ----------
+  topPaymentMethod: TopPaymentMethodView | null = null;
+  highestExpense: HighestExpenseView | null = null;
 
   series: SeriesPoint[] = this.buildSeries([]);
 
@@ -212,7 +251,7 @@ export class EgresosComponent implements OnInit {
       category: ['Alimentación', [Validators.required]],
       amount: [null, [Validators.required, Validators.min(0.01)]],
       method: ['Efectivo', [Validators.required]],
-      date: [this.todayIso(), [Validators.required]],
+      date: [this.todayIso(), [Validators.required, noFutureDateValidator()]],
     });
 
     this.goalForm = this.fb.group({
@@ -234,7 +273,13 @@ export class EgresosComponent implements OnInit {
   }
 
   private todayIso(): string {
-    return new Date().toISOString().slice(0, 10);
+    return localTodayIso();
+  }
+
+  // Usado en el template para poner max="..." en el <input type="date">,
+  // así el selector de fecha del navegador ni siquiera deja elegir un día futuro.
+  get maxDate(): string {
+    return this.todayIso();
   }
 
   // Pide los egresos Y la meta al mismo tiempo (forkJoin espera a que ambas
@@ -305,8 +350,47 @@ export class EgresosComponent implements OnInit {
       return { label: cat, amount: this.formatQ(amount), percent, color: this.categoryColors[cat] };
     });
 
+    this.topPaymentMethod = this.computeTopPaymentMethod(thisMonthExpenses, totalThisMonth);
+    this.highestExpense = this.computeHighestExpense(thisMonthExpenses);
+
     this.availableMonths = this.buildAvailableMonths(expenses);
     this.series = this.buildSeries(expenses, this.selectedMonthKey);
+  }
+
+  // Método de pago con mayor monto acumulado este mes. Es información NUEVA
+  // en el panel (no está en la dona de categorías ni en la tabla completa).
+  private computeTopPaymentMethod(expenses: Expense[], total: number): TopPaymentMethodView | null {
+    if (expenses.length === 0) return null;
+
+    const byMethod = new Map<string, { amount: number; count: number }>();
+    expenses.forEach((e) => {
+      const entry = byMethod.get(e.method) ?? { amount: 0, count: 0 };
+      entry.amount += e.amount;
+      entry.count += 1;
+      byMethod.set(e.method, entry);
+    });
+
+    const [label, stats] = [...byMethod.entries()].sort((a, b) => b[1].amount - a[1].amount)[0];
+    return {
+      label,
+      amount: this.formatQ(stats.amount),
+      percent: total > 0 ? Math.round((stats.amount / total) * 100) : 0,
+      count: stats.count,
+    };
+  }
+
+  // El egreso individual más alto del mes: ayuda a detectar gastos grandes
+  // de un vistazo, sin tener que revisar toda la tabla de "Últimos egresos".
+  private computeHighestExpense(expenses: Expense[]): HighestExpenseView | null {
+    if (expenses.length === 0) return null;
+
+    const top = expenses.reduce((max, e) => (e.amount > max.amount ? e : max), expenses[0]);
+    return {
+      description: top.description,
+      category: top.category,
+      amount: this.formatQ(top.amount),
+      date: this.formatDate(top.date),
+    };
   }
 
   private buildSeries(expenses: Expense[], monthKey?: string): SeriesPoint[] {
