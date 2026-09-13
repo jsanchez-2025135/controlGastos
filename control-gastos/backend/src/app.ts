@@ -4,6 +4,8 @@ import authRoutes from './modules/auth/routes/auth.routes';
 import incomeRoutes from './modules/income/routes/income.routes';
 import expenseRoutes from './modules/expense/routes/expense.routes';
 import expenseGoalRoutes from './modules/expense/routes/expense-goal.routes';
+import smallExpenseRoutes from './modules/small-expense/routes/small-expense.routes';
+import smallExpenseGoalRoutes from './modules/small-expense/routes/small-expense-goal.routes';
 
 /**
  * Configuración de la aplicación Express: middlewares globales y montaje
@@ -24,6 +26,8 @@ app.get('/api/health', (_req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/incomes', incomeRoutes);
 app.use('/api/expenses', expenseRoutes);
-app.use('/api/expense-goals', expenseGoalRoutes); // ← nuevo
+app.use('/api/expense-goals', expenseGoalRoutes);
+app.use('/api/small-expenses', smallExpenseRoutes); // ← nuevo
+app.use('/api/small-expense-goals', smallExpenseGoalRoutes); // ← nuevo
 
 export default app;
