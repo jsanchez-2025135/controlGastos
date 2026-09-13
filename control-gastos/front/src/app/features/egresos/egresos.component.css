@@ -239,6 +239,15 @@
 .field input:focus, .field select:focus { outline: none; border-color: var(--pink); }
 .field__error { color: #e0524d; font-size: 0.72rem; }
 
+.modal__error-banner {
+  background: #fdecea;
+  border: 1px solid #f5b3ae;
+  color: #b3261e;
+  font-size: 0.8rem;
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+}
+
 .field-row { display: flex; gap: 0.8rem; }
 
 .modal__actions { display: flex; justify-content: flex-end; gap: 0.7rem; margin-top: 0.4rem; }
