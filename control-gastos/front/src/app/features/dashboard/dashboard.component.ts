@@ -79,7 +79,7 @@ export class DashboardComponent implements OnInit {
   ];
   
   navItemsSecondary: NavItem[] = [
-    { icon: 'list', label: 'Transacciones' },
+    { icon: 'list', label: 'Transacciones', route: '/transacciones' },
     { icon: 'chart-pie', label: 'Presupuestos' },
   ];
 

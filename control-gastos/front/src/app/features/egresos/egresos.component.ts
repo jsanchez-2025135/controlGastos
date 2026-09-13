@@ -88,10 +88,11 @@ export class EgresosComponent implements OnInit {
     { icon: 'coffee', label: 'Pequeños Consumos', route: '/pequenos-consumos' },
   ];
 
-  navItemsSecondary: NavItem[] = [
-    { icon: 'list', label: 'Transacciones' },
+    navItemsSecondary: NavItem[] = [
+    { icon: 'list', label: 'Transacciones', route: '/transacciones' },
     { icon: 'chart-pie', label: 'Presupuestos' },
   ];
+  
   navItemsTertiary: NavItem[] = [
     { icon: 'chart-bar', label: 'Reportes' },
     { icon: 'bell', label: 'Notificaciones' },
