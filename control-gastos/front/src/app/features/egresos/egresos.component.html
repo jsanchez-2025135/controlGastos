@@ -23,7 +23,7 @@
       <div class="nav__divider"></div>
 
       <div class="nav__group">
-        <a *ngFor="let item of navItemsSecondary" class="nav__item">
+        <a *ngFor="let item of navItemsSecondary" class="nav__item" [routerLink]="item.route ?? null" [class.nav__item--active]="item.active">
           <span class="nav__icon" [ngSwitch]="item.icon">
             <svg *ngSwitchCase="'list'" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 9h8M8 12.5h8M8 16h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
             <svg *ngSwitchCase="'chart-pie'" viewBox="0 0 24 24" fill="none"><path d="M12 3.5A8.5 8.5 0 1 0 20.5 12H12V3.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14.5 3.8A8.52 8.52 0 0 1 20.2 9.5H14.5V3.8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
