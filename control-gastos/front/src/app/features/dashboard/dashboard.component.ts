@@ -71,13 +71,13 @@ interface NavItem {
 export class DashboardComponent implements OnInit {
   user: ReturnType<AuthService['getUser']>;
 
-  navItems: NavItem[] = [
+      navItems: NavItem[] = [
     { icon: 'grid', label: 'Vista General', active: true, route: '/dashboard' },
     { icon: 'in', label: 'Ingresos', route: '/ingresos' },
     { icon: 'out', label: 'Egresos', route: '/egresos' },
-    { icon: 'coffee', label: 'Pequeños Consumos' },
+    { icon: 'coffee', label: 'Pequeños Consumos', route: '/pequenos-consumos' },
   ];
-
+  
   navItemsSecondary: NavItem[] = [
     { icon: 'list', label: 'Transacciones' },
     { icon: 'chart-pie', label: 'Presupuestos' },
@@ -110,6 +110,7 @@ export class DashboardComponent implements OnInit {
     Vivienda: '#3B82F6',
     Servicios: '#8B5CF6',
     Otros: '#C084FC',
+    'Pequeños consumos': ''
   };
 
   expenseDistribution: ExpenseSlice[] = (['Alimentación', 'Transporte', 'Vivienda', 'Servicios', 'Otros'] as ExpenseCategory[]).map((cat) => ({
