@@ -13,6 +13,7 @@ export interface User {
   role: Role;
   googleId: string | null;
   avatarUrl: string | null;
+  createdAt: string;
 }
 
 /** Versión segura del usuario, sin password, para devolver al cliente. */

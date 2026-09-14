@@ -8,6 +8,7 @@ import smallExpenseRoutes from './modules/small-expense/routes/small-expense.rou
 import smallExpenseGoalRoutes from './modules/small-expense/routes/small-expense-goal.routes';
 import budgetRoutes from './modules/budget/routes/budget.routes';
 import notificationRoutes from './modules/notification/routes/notification.routes';
+import accountRoutes from './modules/account/routes/account.routes';
 
 /**
  * Configuración de la aplicación Express: middlewares globales y montaje
@@ -33,5 +34,6 @@ app.use('/api/small-expenses', smallExpenseRoutes); // ← nuevo
 app.use('/api/small-expense-goals', smallExpenseGoalRoutes); // ← nuevo
 app.use('/api/budgets', budgetRoutes);
 app.use('/api/notifications', notificationRoutes); // ← nuevo
+app.use('/api/account', accountRoutes); // ← nuevo
 
 export default app;

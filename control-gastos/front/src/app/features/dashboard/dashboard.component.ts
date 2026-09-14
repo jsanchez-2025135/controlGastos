@@ -88,8 +88,8 @@ export class DashboardComponent implements OnInit {
     { icon: 'bell', label: 'Notificaciones', route: '/notificaciones' },
   ];
 
-  navItemsAccount: NavItem[] = [
-    { icon: 'user', label: 'Cuenta' },
+    navItemsAccount: NavItem[] = [
+    { icon: 'user', label: 'Cuenta', route: '/cuenta' },
     { icon: 'gear', label: 'Ajustes' },
   ];
 

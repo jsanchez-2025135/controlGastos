@@ -13,10 +13,12 @@ export interface IUserRepository {
   }): Promise<User>;
   linkGoogleId(userId: string, googleId: string): Promise<void>;
   updateGoogleProfile(userId: string, data: { name: string; avatarUrl: string | null }): Promise<void>;
+  updateName(userId: string, name: string): Promise<void>;
+  updatePassword(userId: string, passwordHash: string): Promise<void>;
 }
 
 const SELECT_FIELDS =
-  'id, name, email, password, role, google_id AS "googleId", avatar_url AS "avatarUrl"';
+  'id, name, email, password, role, google_id AS "googleId", avatar_url AS "avatarUrl", created_at AS "createdAt"';
 
 export class PostgresUserRepository implements IUserRepository {
   async findByEmail(email: string): Promise<User | null> {
@@ -68,6 +70,14 @@ export class PostgresUserRepository implements IUserRepository {
       data.avatarUrl,
       userId,
     ]);
+  }
+
+  async updateName(userId: string, name: string): Promise<void> {
+    await pool.query('UPDATE users SET name = $1 WHERE id = $2', [name, userId]);
+  }
+
+  async updatePassword(userId: string, passwordHash: string): Promise<void> {
+    await pool.query('UPDATE users SET password = $1 WHERE id = $2', [passwordHash, userId]);
   }
 }
 

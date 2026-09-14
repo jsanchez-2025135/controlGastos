@@ -39,6 +39,10 @@ export class AuthService {
   );
 }
 
+updateStoredUser(user: AuthUser): void {
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+  }
+  
   logout(): void {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);

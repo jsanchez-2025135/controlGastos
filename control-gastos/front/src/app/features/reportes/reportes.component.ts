@@ -94,8 +94,8 @@ export class ReportesComponent implements OnInit {
     { icon: 'chart-bar', label: 'Reportes', active: true, route: '/reportes' },
     { icon: 'bell', label: 'Notificaciones', route: '/notificaciones' },
   ];
-  navItemsAccount: NavItem[] = [
-    { icon: 'user', label: 'Cuenta' },
+    navItemsAccount: NavItem[] = [
+    { icon: 'user', label: 'Cuenta', route: '/cuenta' },
     { icon: 'gear', label: 'Ajustes' },
   ];
 

@@ -7,8 +7,9 @@ import { PequenosConsumosComponent } from './features/pequenos-consumos/pequenos
 import { TransaccionesComponent } from './features/transacciones/transacciones.component';
 import { PresupuestosComponent } from './features/presupuestos/presupuestos.component';
 import { ReportesComponent } from './features/reportes/reportes.component';
-import { authGuard } from './core/guards/auth.guard';
 import { NotificacionesComponent } from './features/notificaciones/notificaciones.component';
+import { CuentaComponent } from './features/cuenta/cuenta.component';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -23,6 +24,7 @@ export const routes: Routes = [
   { path: 'presupuestos', component: PresupuestosComponent, canActivate: [authGuard] },
   { path: 'reportes', component: ReportesComponent, canActivate: [authGuard] },
   { path: 'notificaciones', component: NotificacionesComponent, canActivate: [authGuard] },
+  { path: 'cuenta', component: CuentaComponent, canActivate: [authGuard] },
   // Ejemplo de ruta protegida SOLO para Admin (lista para cuando exista la vista)
   // { path: 'admin', component: AdminComponent, canActivate: [authGuard], data: { role: 'admin' } },
 
