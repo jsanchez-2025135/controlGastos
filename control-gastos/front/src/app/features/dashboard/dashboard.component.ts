@@ -105,13 +105,13 @@ export class DashboardComponent implements OnInit {
   series: SeriesPoint[] = this.buildMonthlySeries([], []);
 
   readonly categoryColors: Record<ExpenseCategory, string> = {
-    Alimentación: '#12B5A0',
-    Transporte: '#5B4FE8',
-    Vivienda: '#3B82F6',
-    Servicios: '#8B5CF6',
-    Otros: '#C084FC',
-    'Pequeños consumos': ''
-  };
+  Alimentación: '#12B5A0',
+  Transporte: '#5B4FE8',
+  Vivienda: '#3B82F6',
+  Servicios: '#8B5CF6',
+  Otros: '#C084FC',
+  'Pequeños consumos': '#F59E0B'
+};
 
   expenseDistribution: ExpenseSlice[] = (['Alimentación', 'Transporte', 'Vivienda', 'Servicios', 'Otros'] as ExpenseCategory[]).map((cat) => ({
     label: cat,
@@ -126,15 +126,16 @@ export class DashboardComponent implements OnInit {
 
   private readonly chartWidth = 640;
   private readonly chartHeight = 220;
-  private readonly maxValue = 10000;
+  private maxValue = 10000;
 
   private totalIngresosValue = 0;
   private totalEgresosValue = 0;
 
-  get chartPoints() {
+    get chartPoints() {
+    const rawMax = Math.max(...this.series.flatMap((p) => [p.ingresos, p.egresos, p.consumos]), 1);
+    this.maxValue = this.roundUpNice(rawMax);
     const stepX = this.chartWidth / (this.series.length - 1);
     const toY = (value: number) => this.chartHeight - (value / this.maxValue) * this.chartHeight;
-
     const build = (key: 'ingresos' | 'egresos' | 'consumos') =>
       this.series.map((point, i) => ({ x: i * stepX, y: toY(point[key]) }));
 
@@ -145,7 +146,7 @@ export class DashboardComponent implements OnInit {
     const egresos = build('egresos');
     const consumos = build('consumos');
 
-    return {
+        return {
       width: this.chartWidth,
       height: this.chartHeight,
       ingresosPath: toPath(ingresos),
@@ -154,6 +155,7 @@ export class DashboardComponent implements OnInit {
       ingresos,
       egresos,
       consumos,
+      maxValue: this.maxValue,
     };
   }
 
@@ -308,6 +310,17 @@ export class DashboardComponent implements OnInit {
     const [y, m, d] = iso.split('-');
     const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
     return `${Number(d)} ${meses[Number(m) - 1]} ${y}`;
+  }
+
+    private roundUpNice(value: number): number {
+    if (value <= 0) return 10000;
+    const magnitude = Math.pow(10, Math.floor(Math.log10(value)));
+    const residual = value / magnitude;
+    let niceResidual = 1;
+    if (residual > 5) niceResidual = 10;
+    else if (residual > 2) niceResidual = 5;
+    else if (residual > 1) niceResidual = 2;
+    return niceResidual * magnitude;
   }
 
   logout(): void {
