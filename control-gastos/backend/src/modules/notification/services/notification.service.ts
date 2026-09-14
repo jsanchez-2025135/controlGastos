@@ -36,10 +36,14 @@ export class NotificationService {
   // Se llama al abrir la pantalla de Notificaciones: genera "de oficio" los
   // avisos que dependen del calendario (bienvenida, reporte del mes nuevo)
   // antes de devolver la lista.
-  private static async isCategoryEnabled(userId: string, category: 'recordatorio' | 'transaccion' | 'reporte' | 'sistema'): Promise<boolean> {
-    const settings = await settingsRepository.getEffective(userId);
-    return settings[CATEGORY_TO_FIELD[category]];
-  }
+  private static async isCategoryEnabled(
+  userId: string, 
+  category: 'recordatorio' | 'transaccion' | 'reporte' | 'sistema'
+): Promise<boolean> {
+  const settings = await settingsRepository.getEffective(userId);
+  const field = CATEGORY_TO_FIELD[category] as keyof typeof settings;
+  return Boolean(settings[field]);
+}
 
   static async list(userId: string): Promise<NotificationSummary> {
     await this.ensureWelcome(userId);

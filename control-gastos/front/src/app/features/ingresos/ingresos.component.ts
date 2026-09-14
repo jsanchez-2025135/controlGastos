@@ -100,9 +100,9 @@ export class IngresosComponent implements OnInit {
     { icon: 'bell', label: 'Notificaciones', route: '/notificaciones' },
   ];
 
-  navItemsAccount: NavItem[] = [
-    { icon: 'user', label: 'Cuenta' },
-    { icon: 'gear', label: 'Ajustes' },
+      navItemsAccount: NavItem[] = [
+    { icon: 'user', label: 'Cuenta', route: '/cuenta' },
+    { icon: 'gear', label: 'Ajustes', route: '/ajustes' },
   ];
 
   readonly categoriesByType: Record<'Fijo' | 'Variable', string[]> = {

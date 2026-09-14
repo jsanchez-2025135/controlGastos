@@ -43,7 +43,7 @@ export class PresupuestosComponent implements OnInit {
 
     navItemsAccount: NavItem[] = [
     { icon: 'user', label: 'Cuenta', route: '/cuenta' },
-    { icon: 'gear', label: 'Ajustes' },
+    { icon: 'gear', label: 'Ajustes', route: '/ajustes' },
   ];
 
   readonly categories: BudgetCategory[] = BUDGET_CATEGORIES;

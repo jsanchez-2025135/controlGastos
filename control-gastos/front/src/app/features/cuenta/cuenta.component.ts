@@ -49,7 +49,7 @@ export class CuentaComponent implements OnInit {
   ];
   navItemsAccount: NavItem[] = [
     { icon: 'user', label: 'Cuenta', active: true, route: '/cuenta' },
-    { icon: 'gear', label: 'Ajustes' },
+    { icon: 'gear', label: 'Ajustes', route: '/ajustes' },
   ];
 
   isLoading = false;

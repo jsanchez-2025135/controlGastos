@@ -61,9 +61,9 @@ export class NotificacionesComponent implements OnInit {
     { icon: 'chart-bar', label: 'Reportes', route: '/reportes' },
     { icon: 'bell', label: 'Notificaciones', active: true, route: '/notificaciones' },
   ];
-    navItemsAccount: NavItem[] = [
+      navItemsAccount: NavItem[] = [
     { icon: 'user', label: 'Cuenta', route: '/cuenta' },
-    { icon: 'gear', label: 'Ajustes' },
+    { icon: 'gear', label: 'Ajustes', route: '/ajustes' },
   ];
 
   readonly categoryLabels = CATEGORY_LABELS;

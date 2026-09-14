@@ -83,9 +83,9 @@ export class TransaccionesComponent implements OnInit {
     { icon: 'bell', label: 'Notificaciones', route: '/notificaciones' },
   ];
 
-    navItemsAccount: NavItem[] = [
+      navItemsAccount: NavItem[] = [
     { icon: 'user', label: 'Cuenta', route: '/cuenta' },
-    { icon: 'gear', label: 'Ajustes' },
+    { icon: 'gear', label: 'Ajustes', route: '/ajustes' },
   ];
 
   // Categorías combinadas (de Ingresos y Egresos) para el filtro "Categoría".

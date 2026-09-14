@@ -9,6 +9,7 @@ import { PresupuestosComponent } from './features/presupuestos/presupuestos.comp
 import { ReportesComponent } from './features/reportes/reportes.component';
 import { NotificacionesComponent } from './features/notificaciones/notificaciones.component';
 import { CuentaComponent } from './features/cuenta/cuenta.component';
+import { AjustesComponent } from './features/ajustes/ajustes.component';
 import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
@@ -25,6 +26,7 @@ export const routes: Routes = [
   { path: 'reportes', component: ReportesComponent, canActivate: [authGuard] },
   { path: 'notificaciones', component: NotificacionesComponent, canActivate: [authGuard] },
   { path: 'cuenta', component: CuentaComponent, canActivate: [authGuard] },
+  { path: 'ajustes', component: AjustesComponent, canActivate: [authGuard] },
   // Ejemplo de ruta protegida SOLO para Admin (lista para cuando exista la vista)
   // { path: 'admin', component: AdminComponent, canActivate: [authGuard], data: { role: 'admin' } },
 

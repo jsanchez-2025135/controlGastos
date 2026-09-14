@@ -97,9 +97,9 @@ export class PequenosConsumosComponent implements OnInit {
     { icon: 'bell', label: 'Notificaciones', route: '/notificaciones' },
   ];
 
-    navItemsAccount: NavItem[] = [
+      navItemsAccount: NavItem[] = [
     { icon: 'user', label: 'Cuenta', route: '/cuenta' },
-    { icon: 'gear', label: 'Ajustes' },
+    { icon: 'gear', label: 'Ajustes', route: '/ajustes' },
   ];
 
   readonly categories: SmallExpenseCategory[] = ['Café', 'Snacks', 'Bebidas', 'Panadería', 'Otros'];
