@@ -7,6 +7,8 @@ import { IncomeService } from '../../core/services/income.service';
 import { ExpenseService } from '../../core/services/expense.service';
 import { Income } from '../../core/models/income.model';
 import { Expense, ExpenseCategory } from '../../core/models/expense.model';
+import { SmallExpenseService } from '../../core/services/small-expense.service';
+import { SmallExpense, SmallExpenseCategory } from '../../core/models/small-expense.model';
 
 interface KpiCard {
   icon: 'in' | 'out' | 'coffee' | 'wallet';
@@ -177,11 +179,12 @@ export class DashboardComponent implements OnInit {
     return this.formatQ(this.totalEgresosValue);
   }
 
-  constructor(
+    constructor(
     private authService: AuthService,
     private router: Router,
     private incomeService: IncomeService,
     private expenseService: ExpenseService,
+    private smallExpenseService: SmallExpenseService,
   ) {
     this.user = this.authService.getUser();
   }
@@ -193,13 +196,14 @@ export class DashboardComponent implements OnInit {
   // Pide ingresos Y egresos al mismo tiempo (forkJoin espera a que ambas
   // peticiones terminen) para poder cruzar la información en un solo lugar
   // y no repintar la pantalla dos veces.
-  private loadDashboard(): void {
+    private loadDashboard(): void {
     forkJoin({
       incomeSummary: this.incomeService.getSummary(),
       expenseSummary: this.expenseService.getSummary(),
+      smallExpenseSummary: this.smallExpenseService.getSummary(),
     }).subscribe({
-      next: ({ incomeSummary, expenseSummary }) => {
-        this.applyDashboardData(incomeSummary.data.incomes, expenseSummary.data.expenses);
+      next: ({ incomeSummary, expenseSummary, smallExpenseSummary }) => {
+        this.applyDashboardData(incomeSummary.data.incomes, expenseSummary.data.expenses, smallExpenseSummary.data.items);
       },
       error: (err) => {
         console.error('Error cargando datos del dashboard', err);
@@ -207,7 +211,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  private applyDashboardData(incomes: Income[], expenses: Expense[]): void {
+    private applyDashboardData(incomes: Income[], expenses: Expense[], smallExpenses: SmallExpense[]): void {
     const now = new Date();
     const thisMonthKey = this.monthKey(now);
 
@@ -244,7 +248,7 @@ export class DashboardComponent implements OnInit {
       isoDate: inc.date,
     }));
 
-    const expenseTx: Transaction[] = expenses.map((exp) => ({
+        const expenseTx: Transaction[] = expenses.map((exp) => ({
       icon: 'out',
       title: exp.description,
       subtitle: exp.category,
@@ -257,8 +261,48 @@ export class DashboardComponent implements OnInit {
     this.transactions = [...incomeTx, ...expenseTx]
       .sort((a, b) => b.isoDate.localeCompare(a.isoDate))
       .slice(0, 5);
+
+    // KPI "Pequeños Consumos" (índice 2) y lista de más frecuentes.
+    const smallExpensesThisMonth = smallExpenses.filter((s) => s.date.slice(0, 7) === thisMonthKey);
+    const totalConsumosValue = smallExpensesThisMonth.reduce((sum, s) => sum + s.amount, 0);
+    this.kpis = this.kpis.map((kpi, i) => (i === 2 ? { ...kpi, amount: this.formatQ(totalConsumosValue) } : kpi));
+
+    this.frequentConsumptions = this.buildFrequentConsumptions(smallExpensesThisMonth);
   }
 
+    private buildFrequentConsumptions(items: SmallExpense[]): FrequentItem[] {
+    const iconByCategory: Record<SmallExpenseCategory, FrequentItem['icon']> = {
+      Café: 'coffee',
+      Snacks: 'snack',
+      Bebidas: 'drink',
+      Panadería: 'bakery',
+      Otros: 'other',
+    };
+
+    const totalsByCategory = new Map<SmallExpenseCategory, number>();
+    items.forEach((item) => {
+      totalsByCategory.set(item.category, (totalsByCategory.get(item.category) ?? 0) + item.amount);
+    });
+
+    const rows = Array.from(totalsByCategory.entries()).map(([category, amount]) => ({
+      icon: iconByCategory[category],
+      label: category,
+      rawAmount: amount,
+      amount: this.formatQ(amount),
+    }));
+
+    const maxAmount = Math.max(...rows.map((r) => r.rawAmount), 1);
+
+    return rows
+      .sort((a, b) => b.rawAmount - a.rawAmount)
+      .slice(0, 4)
+      .map((r) => ({
+        icon: r.icon,
+        label: r.label,
+        amount: r.amount,
+        percentOfMax: Math.round((r.rawAmount / maxAmount) * 100),
+      }));
+  }
   // Construye los últimos 6 meses TERMINANDO en el mes actual (no meses
   // fijos), y suma ingresos/egresos que caen en cada uno.
   private buildMonthlySeries(incomes: Income[], expenses: Expense[]): SeriesPoint[] {

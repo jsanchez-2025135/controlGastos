@@ -147,7 +147,7 @@
         <article class="panel panel--transactions">
           <div class="panel__header">
             <h2>Últimas transacciones</h2>
-            <a class="panel__link">Ver todas</a>
+            <a class="panel__link" routerLink="/transacciones">Ver todas</a>
           </div>
           <ul class="tx-list" *ngIf="transactions.length > 0">
             <li class="tx-row" *ngFor="let tx of transactions">
@@ -167,7 +167,7 @@
             </li>
           </ul>
           <p class="empty-state" *ngIf="transactions.length === 0">Aún no tienes transacciones registradas.</p>
-          <a class="panel__footer-link">Ver todas las transacciones →</a>
+          <a class="panel__footer-link" routerLink="/transacciones">Ver todas las transacciones →</a>
         </article>
 
       </section>
@@ -195,7 +195,7 @@
               </li>
             </ul>
           </div>
-          <a class="panel__footer-link">Ver reporte completo →</a>
+          <a class="panel__footer-link" routerLink="/reportes">Ver reporte completo →</a>
         </article>
 
         <article class="panel">
@@ -215,7 +215,7 @@
             </li>
           </ul>
           <p class="empty-state" *ngIf="frequentConsumptions.length === 0">Aún no tienes pequeños consumos registrados.</p>
-          <a class="panel__footer-link">Ver todos los pequeños consumos →</a>
+          <a class="panel__footer-link" routerLink="/pequenos-consumos">Ver todos los pequeños consumos →</a>
         </article>
 
       </section>
