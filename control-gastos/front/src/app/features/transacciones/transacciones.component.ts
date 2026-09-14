@@ -75,7 +75,7 @@ export class TransaccionesComponent implements OnInit {
   ];
   navItemsSecondary: NavItem[] = [
     { icon: 'list', label: 'Transacciones', active: true, route: '/transacciones' },
-    { icon: 'chart-pie', label: 'Presupuestos' },
+    { icon: 'chart-pie', label: 'Presupuestos', route: '/presupuestos' },
   ];
   navItemsTertiary: NavItem[] = [
     { icon: 'chart-bar', label: 'Reportes' },

@@ -89,7 +89,7 @@ export class PequenosConsumosComponent implements OnInit {
   ];
    navItemsSecondary: NavItem[] = [
     { icon: 'list', label: 'Transacciones', route: '/transacciones' },
-    { icon: 'chart-pie', label: 'Presupuestos' },
+    { icon: 'chart-pie', label: 'Presupuestos', route: '/presupuestos' },
   ];
   navItemsTertiary: NavItem[] = [
     { icon: 'chart-bar', label: 'Reportes' },
