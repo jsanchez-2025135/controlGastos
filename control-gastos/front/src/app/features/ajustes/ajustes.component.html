@@ -1,0 +1,165 @@
+<div class="shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="assets/images/Logo-gastos-sinfondo.png" alt="Control de Gastos" class="brand__logo" />
+      <span class="brand__name">Control<br />de gastos</span>
+    </div>
+
+    <nav class="nav">
+      <div class="nav__group">
+        <a *ngFor="let item of navItems" class="nav__item" [routerLink]="item.route ?? null" [class.nav__item--active]="item.active">
+          <span class="nav__icon" [ngSwitch]="item.icon" [class.nav__icon--in]="item.icon === 'in'" [class.nav__icon--out]="item.icon === 'out'" [class.nav__icon--coffee]="item.icon === 'coffee'">
+            <svg *ngSwitchCase="'grid'" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/></svg>
+            <svg *ngSwitchCase="'in'" viewBox="0 0 24 24" fill="none"><path d="M12 6v10M8 12l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg *ngSwitchCase="'out'" viewBox="0 0 24 24" fill="none"><path d="M12 18V8M8 12l4-4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg *ngSwitchCase="'coffee'" viewBox="0 0 24 24" fill="none"><path d="M17.5 9h1a3.2 3.2 0 0 1 0 6.4h-1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M2.5 9h15v6.2a3.6 3.6 0 0 1-3.6 3.6h-7.8A3.6 3.6 0 0 1 2.5 15.2V9Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M6 5.2c0 .8-.9.8-.9 1.6M9.5 5.2c0 .8-.9.8-.9 1.6M13 5.2c0 .8-.9.8-.9 1.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </span>
+          <span>{{ item.label }}</span>
+        </a>
+      </div>
+
+      <div class="nav__divider"></div>
+
+      <div class="nav__group">
+        <a *ngFor="let item of navItemsSecondary" class="nav__item" [routerLink]="item.route ?? null" [class.nav__item--active]="item.active">
+          <span class="nav__icon" [ngSwitch]="item.icon">
+            <svg *ngSwitchCase="'list'" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 9h8M8 12.5h8M8 16h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <svg *ngSwitchCase="'chart-pie'" viewBox="0 0 24 24" fill="none"><path d="M12 3.5A8.5 8.5 0 1 0 20.5 12H12V3.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14.5 3.8A8.52 8.52 0 0 1 20.2 9.5H14.5V3.8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          </span>
+          <span>{{ item.label }}</span>
+        </a>
+      </div>
+
+      <div class="nav__divider"></div>
+
+      <div class="nav__group">
+        <a *ngFor="let item of navItemsTertiary" class="nav__item" [routerLink]="item.route ?? null" [class.nav__item--active]="item.active">
+          <span class="nav__icon" [ngSwitch]="item.icon">
+            <svg *ngSwitchCase="'chart-bar'" viewBox="0 0 24 24" fill="none"><path d="M5 19V10M12 19V5M19 19v-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <svg *ngSwitchCase="'bell'" viewBox="0 0 24 24" fill="none"><path d="M6 10a6 6 0 0 1 12 0v4l1.5 3h-15L6 14v-4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span>
+          <span>{{ item.label }}</span>
+        </a>
+      </div>
+
+      <div class="nav__divider nav__divider--push"></div>
+
+      <div class="nav__group">
+        <a *ngFor="let item of navItemsAccount" class="nav__item" [routerLink]="item.route ?? null" [class.nav__item--active]="item.active">
+          <span class="nav__icon" [ngSwitch]="item.icon">
+            <svg *ngSwitchCase="'user'" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.5" r="3.2" stroke="currentColor" stroke-width="1.6"/><path d="M5 19c1.2-3.2 4-4.8 7-4.8s5.8 1.6 7 4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <svg *ngSwitchCase="'gear'" viewBox="0 0 24 24" fill="none"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z" stroke="currentColor" stroke-width="1.6"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2.05 2.05 0 1 1-2.9 2.9l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21.1a2.05 2.05 0 0 1-4.1 0v-.1a1.7 1.7 0 0 0-1.11-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2.05 2.05 0 1 1-2.9-2.9l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.03H2.9a2.05 2.05 0 0 1 0-4.1H3a1.7 1.7 0 0 0 1.55-1.11 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2.05 2.05 0 1 1 2.9-2.9l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1.03-1.56V2.9a2.05 2.05 0 0 1 4.1 0V3a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2.05 2.05 0 1 1 2.9 2.9l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.56 1.03h.1a2.05 2.05 0 0 1 0 4.1H21a1.7 1.7 0 0 0-1.56 1.03Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          </span>
+          <span>{{ item.label }}</span>
+        </a>
+        <button class="nav__item nav__item--logout" (click)="logout()">
+          <span class="nav__icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M9 19H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M16 16l4-4-4-4M20 12H9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span>Cerrar sesión</span>
+        </button>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Header -->
+    <header class="topbar">
+      <div class="topbar__page">
+        <span class="topbar__page-icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z" stroke="currentColor" stroke-width="1.6"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2.05 2.05 0 1 1-2.9 2.9l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21.1a2.05 2.05 0 0 1-4.1 0v-.1a1.7 1.7 0 0 0-1.11-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2.05 2.05 0 1 1-2.9-2.9l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.03H2.9a2.05 2.05 0 0 1 0-4.1H3a1.7 1.7 0 0 0 1.55-1.11 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2.05 2.05 0 1 1 2.9-2.9l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1.03-1.56V2.9a2.05 2.05 0 0 1 4.1 0V3a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2.05 2.05 0 1 1 2.9 2.9l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.56 1.03h.1a2.05 2.05 0 0 1 0 4.1H21a1.7 1.7 0 0 0-1.56 1.03Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        </span>
+        <div>
+          <h1 class="topbar__title">Ajustes</h1>
+          <p class="topbar__subtitle">Configura tus preferencias de notificaciones</p>
+        </div>
+      </div>
+      <div class="topbar__account">
+        <div class="topbar__account-text">
+          <strong>{{ user?.role === 'admin' ? 'Administrador' : 'Usuario' }}</strong>
+          <span>Mi Cuenta</span>
+        </div>
+        <div class="avatar">{{ (user?.name || 'U').charAt(0) }}</div>
+      </div>
+    </header>
+
+    <div class="content">
+      <section class="row row--settings">
+
+        <!-- Columna principal -->
+        <div class="col-main">
+
+          <article class="panel">
+            <div class="panel__header">
+              <div>
+                <h2>Preferencias de notificaciones</h2>
+                <p class="panel__subtitle">Elige qué tipo de avisos quieres recibir en la pantalla de Notificaciones.</p>
+              </div>
+            </div>
+
+            <div class="toggle-row" *ngFor="let row of toggleRows">
+              <div class="toggle-row__text">
+                <strong>{{ row.label }}</strong>
+                <span>{{ row.description }}</span>
+              </div>
+              <button
+                type="button"
+                class="switch"
+                [class.switch--on]="settings[row.key]"
+                (click)="toggle(row.key)"
+                [attr.aria-pressed]="settings[row.key]"
+              >
+                <span class="switch__thumb"></span>
+              </button>
+            </div>
+
+            <div class="modal__success-banner" *ngIf="saveSuccess">Tus preferencias se guardaron correctamente.</div>
+
+            <div class="panel__actions">
+              <button type="button" class="btn-primary" [disabled]="isSaving" (click)="save()">{{ isSaving ? 'Guardando...' : 'Guardar cambios' }}</button>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- Columna lateral -->
+        <div class="col-side">
+          <article class="panel">
+            <div class="panel__header"><h2>Información general</h2></div>
+
+            <div class="summary-row">
+              <span class="summary-row__icon">Q</span>
+              <div class="summary-row__body">
+                <span class="summary-row__label">Moneda</span>
+                <strong class="summary-row__value">Quetzal (Q)</strong>
+              </div>
+            </div>
+
+            <div class="summary-row">
+              <span class="summary-row__icon">
+                <svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="4.5" width="17" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 9.5h17M8 3v3M16 3v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              </span>
+              <div class="summary-row__body">
+                <span class="summary-row__label">Formato de fecha</span>
+                <strong class="summary-row__value">DD/MM/AAAA</strong>
+              </div>
+            </div>
+          </article>
+
+          <div class="tip-banner tip-banner--compact">
+            <span class="tip-banner__icon">💡</span>
+            <div class="tip-banner__text">
+              <p>Puedes desactivar categorías de notificaciones sin dejar de usar esas funciones — solo dejarás de recibir avisos sobre ellas.</p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </div>
+
+</div>

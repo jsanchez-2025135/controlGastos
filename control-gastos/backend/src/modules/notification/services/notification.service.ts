@@ -3,6 +3,8 @@ import { Notification } from '../models/notification.model';
 import { incomeRepository } from '@modules/income/models/income.repository';
 import { expenseRepository } from '@modules/expense/models/expense.repository';
 import { ExpenseCategory } from '@modules/expense/models/expense.model';
+import { settingsRepository } from '@modules/settings/models/settings.repository';
+import { CATEGORY_TO_FIELD } from '@modules/settings/models/settings.model';
 
 const startOfMonth = (): Date => {
   const now = new Date();
@@ -34,6 +36,11 @@ export class NotificationService {
   // Se llama al abrir la pantalla de Notificaciones: genera "de oficio" los
   // avisos que dependen del calendario (bienvenida, reporte del mes nuevo)
   // antes de devolver la lista.
+  private static async isCategoryEnabled(userId: string, category: 'recordatorio' | 'transaccion' | 'reporte' | 'sistema'): Promise<boolean> {
+    const settings = await settingsRepository.getEffective(userId);
+    return settings[CATEGORY_TO_FIELD[category]];
+  }
+
   static async list(userId: string): Promise<NotificationSummary> {
     await this.ensureWelcome(userId);
     await this.ensureMonthlyReportNotice(userId);
@@ -71,6 +78,7 @@ export class NotificationService {
   // ---------- Disparadores (llamados desde otros módulos) ----------
 
   static async notifyIncome(userId: string, amount: number, category: string): Promise<void> {
+    if (!(await this.isCategoryEnabled(userId, 'transaccion'))) return;
     await notificationRepository.create({
       userId,
       type: 'ingreso',
@@ -81,6 +89,7 @@ export class NotificationService {
   }
 
   static async notifyExpense(userId: string, amount: number, category: string): Promise<void> {
+    if (!(await this.isCategoryEnabled(userId, 'transaccion'))) return;
     await notificationRepository.create({
       userId,
       type: 'egreso',
@@ -95,6 +104,7 @@ export class NotificationService {
   // para que el promedio tenga sentido, y dispara si el monto duplica ese
   // promedio.
   static async notifyIfUnusualExpense(userId: string, amount: number, category: ExpenseCategory): Promise<void> {
+    if (!(await this.isCategoryEnabled(userId, 'transaccion'))) return;
     const previous = (await expenseRepository.findAllByUser(userId)).filter((e) => e.category === category && e.amount !== amount);
     if (previous.length < 3) return;
 
@@ -114,6 +124,8 @@ export class NotificationService {
   // (gastado / presupuesto de esa categoría este mes). No duplica el mismo
   // aviso para la misma categoría dentro del mismo mes.
   static async notifyBudgetThreshold(userId: string, category: ExpenseCategory, percent: number): Promise<void> {
+    if (!(await this.isCategoryEnabled(userId, 'recordatorio'))) return;
+
     if (percent >= 100) {
       const already = await notificationRepository.existsSince(userId, 'presupuesto_limite', startOfMonth(), category);
       if (!already) {
@@ -144,6 +156,8 @@ export class NotificationService {
   // "Objetivo de ahorro" adaptado: % de tus ingresos de este mes que no has
   // gastado. Avisa una sola vez por umbral (25/50/75/100) por mes.
   static async checkSavingsRate(userId: string): Promise<void> {
+    if (!(await this.isCategoryEnabled(userId, 'sistema'))) return;
+
     const now = new Date();
     const thisMonthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 
@@ -186,6 +200,8 @@ export class NotificationService {
   }
 
   private static async ensureMonthlyReportNotice(userId: string): Promise<void> {
+    if (!(await this.isCategoryEnabled(userId, 'reporte'))) return;
+
     const now = new Date();
     const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
     const meta = `${lastMonth.getFullYear()}-${String(lastMonth.getMonth() + 1).padStart(2, '0')}`;
