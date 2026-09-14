@@ -82,10 +82,11 @@
       </div>
       <div class="topbar__account">
         <div class="topbar__account-text">
-          <strong>{{ user?.role === 'admin' ? 'Administrador' : 'Usuario' }}</strong>
-          <span>Mi Cuenta</span>
-        </div>
-        <div class="avatar">{{ (user?.name || 'U').charAt(0) }}</div>
+          <strong>{{ user?.name || 'Usuario' }}</strong>
+<span>Mi Cuenta</span>
+</div>
+<img *ngIf="user?.avatarUrl" [src]="user?.avatarUrl" alt="Foto de perfil" class="avatar avatar--img" />
+<div *ngIf="!user?.avatarUrl" class="avatar">{{ (user?.name || 'U').charAt(0) }}</div>
       </div>
     </header>
 

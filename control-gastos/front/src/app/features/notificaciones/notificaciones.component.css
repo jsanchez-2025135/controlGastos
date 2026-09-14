@@ -233,3 +233,5 @@
   .filter-pills { flex-direction: column; }
   .notif-item { flex-wrap: wrap; }
 }
+
+.avatar--img { object-fit: cover; }

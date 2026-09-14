@@ -26,6 +26,28 @@ export class AuthController {
     }
   }
 
+  static async google(req: Request, res: Response) {
+    try {
+      const { idToken } = req.body;
+
+      if (!idToken) {
+        return badRequest(res, 'idToken es obligatorio');
+      }
+
+      const result = await AuthService.loginWithGoogle(idToken);
+      return ok(res, result, 'Inicio de sesión con Google exitoso');
+    } catch (error) {
+      if (error instanceof Error && error.message === 'GOOGLE_TOKEN_INVALID') {
+        return unauthorized(res, 'Token de Google inválido');
+      }
+      if (error instanceof Error && error.message === 'GOOGLE_EMAIL_NOT_VERIFIED') {
+        return unauthorized(res, 'Tu correo de Google no está verificado');
+      }
+      console.error(error);
+      return serverError(res);
+    }
+  }
+
   /** Endpoint de ejemplo protegido, útil para probar el guard/middleware. */
   static async me(req: Request, res: Response) {
     return ok(res, (req as any).user, 'Usuario autenticado');

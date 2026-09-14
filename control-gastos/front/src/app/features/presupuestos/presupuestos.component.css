@@ -275,3 +275,5 @@
 .btn-secondary { background: #eef0f5; color: var(--text-dark); }
 .btn-primary { background: var(--indigo); color: #fff; }
 .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.avatar--img { object-fit: cover; }

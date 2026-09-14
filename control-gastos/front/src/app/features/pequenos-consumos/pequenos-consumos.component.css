@@ -288,3 +288,5 @@
 
 /* Texto de ayuda debajo del input de la meta */
 .field-hint { margin: -0.3rem 0 0; font-size: 0.72rem; color: var(--text-muted); line-height: 1.4; }
+
+.avatar--img { object-fit: cover; }

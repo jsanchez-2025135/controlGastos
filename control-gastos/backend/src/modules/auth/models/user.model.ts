@@ -9,8 +9,10 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  password: string; // hash (bcrypt), nunca texto plano
+  password: string | null; // hash (bcrypt); null si el usuario solo entra con Google
   role: Role;
+  googleId: string | null;
+  avatarUrl: string | null;
 }
 
 /** Versión segura del usuario, sin password, para devolver al cliente. */

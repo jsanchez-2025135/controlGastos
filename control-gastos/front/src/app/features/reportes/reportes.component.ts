@@ -92,7 +92,7 @@ export class ReportesComponent implements OnInit {
   ];
   navItemsTertiary: NavItem[] = [
     { icon: 'chart-bar', label: 'Reportes', active: true, route: '/reportes' },
-    { icon: 'bell', label: 'Notificaciones' },
+    { icon: 'bell', label: 'Notificaciones', route: '/notificaciones' },
   ];
   navItemsAccount: NavItem[] = [
     { icon: 'user', label: 'Cuenta' },

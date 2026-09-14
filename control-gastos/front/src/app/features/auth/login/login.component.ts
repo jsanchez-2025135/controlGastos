@@ -1,15 +1,12 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, NgZone, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { environment } from '../../../../environments/environment';
 
-/**
- * Componente de Login.
- * - Reactive Forms con validaciones de correo y contraseña.
- * - Al autenticar correctamente, redirige a /dashboard, la vista general
- *   de Control de Gastos.
- */
+declare const google: any;
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -17,7 +14,9 @@ import { AuthService } from '../../../core/services/auth.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent {
+export class LoginComponent implements AfterViewInit {
+  @ViewChild('googleBtn') googleBtnRef!: ElementRef<HTMLDivElement>;
+
   loginForm: FormGroup;
   errorMessage = '';
   isLoading = false;
@@ -27,7 +26,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private ngZone: NgZone
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -35,7 +35,10 @@ export class LoginComponent {
     });
   }
 
-  // Getters cortos para usar en el HTML sin repetir "loginForm.get(...)"
+  ngAfterViewInit(): void {
+    this.initGoogleButton();
+  }
+
   get email() {
     return this.loginForm.get('email');
   }
@@ -71,6 +74,50 @@ export class LoginComponent {
             ? 'Correo o contraseña incorrectos'
             : 'Ocurrió un error al iniciar sesión. Intenta de nuevo.';
       },
+    });
+  }
+
+  private initGoogleButton(attempt = 0): void {
+    const googleReady = typeof google !== 'undefined' && google?.accounts?.id;
+
+    if (!googleReady) {
+      if (attempt < 10) {
+        setTimeout(() => this.initGoogleButton(attempt + 1), 300);
+      }
+      return;
+    }
+
+    google.accounts.id.initialize({
+      client_id: environment.googleClientId,
+      callback: (response: { credential: string }) => this.handleGoogleCredential(response),
+    });
+
+    google.accounts.id.renderButton(this.googleBtnRef.nativeElement, {
+      type: 'standard',
+      theme: 'outline',
+      size: 'large',
+      shape: 'pill',
+      width: 320,
+      text: 'continue_with',
+      locale: 'es',
+    });
+  }
+
+  private handleGoogleCredential(response: { credential: string }): void {
+    this.ngZone.run(() => {
+      this.errorMessage = '';
+      this.isLoading = true;
+
+      this.authService.loginWithGoogle(response.credential).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.router.navigate(['/dashboard']);
+        },
+        error: () => {
+          this.isLoading = false;
+          this.errorMessage = 'No se pudo iniciar sesión con Google. Intenta de nuevo.';
+        },
+      });
     });
   }
 }

@@ -95,9 +95,9 @@ export class EgresosComponent implements OnInit {
   
     navItemsTertiary: NavItem[] = [
     { icon: 'chart-bar', label: 'Reportes', route: '/reportes' },
-    { icon: 'bell', label: 'Notificaciones' },
+    { icon: 'bell', label: 'Notificaciones', route: '/notificaciones' },
   ];
-  
+
   navItemsAccount: NavItem[] = [
     { icon: 'user', label: 'Cuenta' },
     { icon: 'gear', label: 'Ajustes' },

@@ -17,6 +17,8 @@ export const usersMock: User[] = [
     email: 'admin@controlgastos.com',
     password: '$2b$10$ugyVrrMofsdd5lXfNYFAvurhyiMeKiXJysk.SG0/4FNIxluLCtGgO', // Admin123!
     role: 'admin',
+     googleId: null,
+     avatarUrl: null,
   },
   {
     id: '2',
@@ -24,5 +26,7 @@ export const usersMock: User[] = [
     email: 'user@controlgastos.com',
     password: '$2b$10$aGpvtViywlA26AMIj9pXleVQduA5hxrKLNmkxy.pyaJUcFuH0V5Ki', // User123!
     role: 'user',
+     googleId: null,
+     avatarUrl: null,
   },
 ];

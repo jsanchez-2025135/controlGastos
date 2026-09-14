@@ -190,3 +190,5 @@
   .kpi-row { grid-template-columns: 1fr; }
   .filter-pills { flex-direction: column; }
 }
+
+.avatar--img { object-fit: cover; }

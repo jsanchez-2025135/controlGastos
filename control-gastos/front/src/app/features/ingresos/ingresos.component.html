@@ -35,7 +35,7 @@
       <div class="nav__divider"></div>
 
       <div class="nav__group">
-        <a *ngFor="let item of navItemsTertiary" class="nav__item">
+        <a *ngFor="let item of navItemsTertiary" class="nav__item" [routerLink]="item.route ?? null" [class.nav__item--active]="item.active">
           <span class="nav__icon" [ngSwitch]="item.icon">
             <svg *ngSwitchCase="'chart-bar'" viewBox="0 0 24 24" fill="none"><path d="M5 19V10M12 19V5M19 19v-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
             <svg *ngSwitchCase="'bell'" viewBox="0 0 24 24" fill="none"><path d="M6 10a6 6 0 0 1 12 0v4l1.5 3h-15L6 14v-4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
@@ -80,10 +80,11 @@
       </div>
       <div class="topbar__account">
         <div class="topbar__account-text">
-          <strong>{{ user?.role === 'admin' ? 'Administrador' : 'Usuario' }}</strong>
-          <span>Mi Cuenta</span>
-        </div>
-        <div class="avatar">{{ (user?.name || 'U').charAt(0) }}</div>
+          <strong>{{ user?.name || 'Usuario' }}</strong>
+<span>Mi Cuenta</span>
+</div>
+<img *ngIf="user?.avatarUrl" [src]="user?.avatarUrl" alt="Foto de perfil" class="avatar avatar--img" />
+<div *ngIf="!user?.avatarUrl" class="avatar">{{ (user?.name || 'U').charAt(0) }}</div>
       </div>
     </header>
 
