@@ -1,6 +1,8 @@
 import { expenseRepository } from '../models/expense.repository';
 import { Expense, ExpenseCategory } from '../models/expense.model';
 import { incomeRepository } from '@modules/income/models/income.repository';
+import { budgetRepository } from '@modules/budget/models/budget.repository';
+import { NotificationService } from '@modules/notification/services/notification.service';
 
 // Error específico para cuando el egreso supera el saldo disponible
 // (ingresos totales - egresos ya registrados). El controller lo detecta
@@ -26,9 +28,6 @@ interface CreateExpenseDto {
 
 type UpdateExpenseDto = Omit<CreateExpenseDto, 'userId'>;
 
-// Fecha de HOY en el servidor, en formato YYYY-MM-DD (comparable como string
-// porque el formato es ISO). Es un control de día por día: no se acepta
-// ninguna fecha posterior al día actual (sí se acepta hoy o una fecha pasada).
 const todayIso = (): string => {
   const now = new Date();
   const y = now.getFullYear();
@@ -47,10 +46,6 @@ const validate = (dto: UpdateExpenseDto): void => {
   if (dto.date > todayIso()) throw new Error('DATE_FUTURE_NOT_ALLOWED');
 };
 
-// Saldo disponible del usuario = total de ingresos - total de egresos ya
-// registrados. Si excludeExpenseId viene informado (caso "editar"), ese
-// egreso se excluye de la suma porque su monto anterior ya está contado
-// dentro de los egresos existentes y no debe restarse dos veces.
 const getAvailableBalance = async (userId: string, excludeExpenseId?: string): Promise<number> => {
   const [incomes, expenses] = await Promise.all([
     incomeRepository.findAllByUser(userId),
@@ -68,6 +63,24 @@ const getAvailableBalance = async (userId: string, excludeExpenseId?: string): P
 const ensureSufficientBalance = async (userId: string, amount: number, excludeExpenseId?: string): Promise<void> => {
   const available = await getAvailableBalance(userId, excludeExpenseId);
   if (amount > available) throw new InsufficientBalanceError(available);
+};
+
+// Calcula qué % del presupuesto mensual de esa categoría representa lo
+// gastado ESTE MES (incluyendo el egreso recién creado), y dispara el aviso
+// correspondiente si corresponde. Si el usuario nunca configuró un
+// presupuesto para esa categoría, no hay nada que avisar.
+const checkBudgetAfterExpense = async (userId: string, category: ExpenseCategory): Promise<void> => {
+  const budgets = await budgetRepository.findAllByUser(userId);
+  const budget = budgets.find((b) => b.category === category);
+  if (!budget || budget.monthlyAmount <= 0) return;
+
+  const now = new Date();
+  const thisMonthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  const expenses = await expenseRepository.findAllByUser(userId);
+  const spent = expenses.filter((e) => e.category === category && e.date.slice(0, 7) === thisMonthKey).reduce((sum, e) => sum + e.amount, 0);
+
+  const percent = Math.round((spent / budget.monthlyAmount) * 100);
+  await NotificationService.notifyBudgetThreshold(userId, category, percent);
 };
 
 export interface ExpenseSummary {
@@ -103,7 +116,20 @@ export class ExpenseService {
   static async create(dto: CreateExpenseDto): Promise<Expense> {
     validate(dto);
     await ensureSufficientBalance(dto.userId, dto.amount);
-    return expenseRepository.create(dto);
+    const expense = await expenseRepository.create(dto);
+
+    // Igual que en Ingresos: si falla una notificación, nunca debe tumbar
+    // el registro del egreso (que ya se guardó exitosamente arriba).
+    try {
+      await NotificationService.notifyExpense(dto.userId, dto.amount, dto.category);
+      await NotificationService.notifyIfUnusualExpense(dto.userId, dto.amount, dto.category);
+      await checkBudgetAfterExpense(dto.userId, dto.category);
+      await NotificationService.checkSavingsRate(dto.userId);
+    } catch (error) {
+      console.error('Error generando notificaciones de egreso', error);
+    }
+
+    return expense;
   }
 
   // El repositorio ya filtra por user_id en el UPDATE, pero además revisamos

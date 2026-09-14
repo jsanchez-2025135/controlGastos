@@ -1,5 +1,6 @@
 import { incomeRepository } from '../models/income.repository';
 import { Income, IncomeType } from '../models/income.model';
+import { NotificationService } from '@modules/notification/services/notification.service';
 
 interface CreateIncomeDto {
   userId: string;
@@ -13,9 +14,6 @@ interface CreateIncomeDto {
 
 type UpdateIncomeDto = Omit<CreateIncomeDto, 'userId'>;
 
-// Fecha de HOY en el servidor, en formato YYYY-MM-DD (comparable como string
-// porque el formato es ISO). Es un control de día por día: no se acepta
-// ninguna fecha posterior al día actual (sí se acepta hoy o una fecha pasada).
 const todayIso = (): string => {
   const now = new Date();
   const y = now.getFullYear();
@@ -63,7 +61,18 @@ export class IncomeService {
 
   static async create(dto: CreateIncomeDto): Promise<Income> {
     validate(dto);
-    return incomeRepository.create(dto);
+    const income = await incomeRepository.create(dto);
+
+    // Las notificaciones nunca deben tumbar el registro del ingreso: si algo
+    // falla aquí, solo se registra en consola y se sigue de largo.
+    try {
+      await NotificationService.notifyIncome(dto.userId, dto.amount, dto.category);
+      await NotificationService.checkSavingsRate(dto.userId);
+    } catch (error) {
+      console.error('Error generando notificaciones de ingreso', error);
+    }
+
+    return income;
   }
 
   // El repositorio ya filtra por user_id en el UPDATE, pero además revisamos
