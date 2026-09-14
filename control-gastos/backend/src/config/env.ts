@@ -13,6 +13,9 @@ export const env = {
     secret: process.env.JWT_SECRET || 'dev_secret_change_me',
     expiresIn: process.env.JWT_EXPIRES_IN || '1m',
   },
+  google: {
+    clientId: process.env.GOOGLE_CLIENT_ID || '',
+  },
   db: {
     host: process.env.DB_HOST || 'localhost',
     port: Number(process.env.DB_PORT) || 5432,

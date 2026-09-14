@@ -5,4 +5,6 @@ export interface AuthUser {
   name: string;
   email: string;
   role: Role;
+  avatarUrl?: string | null;
+  createdAt?: string;
 }

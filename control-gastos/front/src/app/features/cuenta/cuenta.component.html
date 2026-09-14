@@ -1,0 +1,221 @@
+<div class="shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="assets/images/Logo-gastos-sinfondo.png" alt="Control de Gastos" class="brand__logo" />
+      <span class="brand__name">Control<br />de gastos</span>
+    </div>
+
+    <nav class="nav">
+      <div class="nav__group">
+        <a *ngFor="let item of navItems" class="nav__item" [routerLink]="item.route ?? null" [class.nav__item--active]="item.active">
+          <span class="nav__icon" [ngSwitch]="item.icon" [class.nav__icon--in]="item.icon === 'in'" [class.nav__icon--out]="item.icon === 'out'" [class.nav__icon--coffee]="item.icon === 'coffee'">
+            <svg *ngSwitchCase="'grid'" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/></svg>
+            <svg *ngSwitchCase="'in'" viewBox="0 0 24 24" fill="none"><path d="M12 6v10M8 12l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg *ngSwitchCase="'out'" viewBox="0 0 24 24" fill="none"><path d="M12 18V8M8 12l4-4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg *ngSwitchCase="'coffee'" viewBox="0 0 24 24" fill="none"><path d="M17.5 9h1a3.2 3.2 0 0 1 0 6.4h-1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M2.5 9h15v6.2a3.6 3.6 0 0 1-3.6 3.6h-7.8A3.6 3.6 0 0 1 2.5 15.2V9Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M6 5.2c0 .8-.9.8-.9 1.6M9.5 5.2c0 .8-.9.8-.9 1.6M13 5.2c0 .8-.9.8-.9 1.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </span>
+          <span>{{ item.label }}</span>
+        </a>
+      </div>
+
+      <div class="nav__divider"></div>
+
+      <div class="nav__group">
+        <a *ngFor="let item of navItemsSecondary" class="nav__item" [routerLink]="item.route ?? null" [class.nav__item--active]="item.active">
+          <span class="nav__icon" [ngSwitch]="item.icon">
+            <svg *ngSwitchCase="'list'" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 9h8M8 12.5h8M8 16h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <svg *ngSwitchCase="'chart-pie'" viewBox="0 0 24 24" fill="none"><path d="M12 3.5A8.5 8.5 0 1 0 20.5 12H12V3.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14.5 3.8A8.52 8.52 0 0 1 20.2 9.5H14.5V3.8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          </span>
+          <span>{{ item.label }}</span>
+        </a>
+      </div>
+
+      <div class="nav__divider"></div>
+
+      <div class="nav__group">
+        <a *ngFor="let item of navItemsTertiary" class="nav__item" [routerLink]="item.route ?? null" [class.nav__item--active]="item.active">
+          <span class="nav__icon" [ngSwitch]="item.icon">
+            <svg *ngSwitchCase="'chart-bar'" viewBox="0 0 24 24" fill="none"><path d="M5 19V10M12 19V5M19 19v-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <svg *ngSwitchCase="'bell'" viewBox="0 0 24 24" fill="none"><path d="M6 10a6 6 0 0 1 12 0v4l1.5 3h-15L6 14v-4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span>
+          <span>{{ item.label }}</span>
+        </a>
+      </div>
+
+      <div class="nav__divider nav__divider--push"></div>
+
+      <div class="nav__group">
+        <a *ngFor="let item of navItemsAccount" class="nav__item" [routerLink]="item.route ?? null" [class.nav__item--active]="item.active">
+          <span class="nav__icon" [ngSwitch]="item.icon">
+            <svg *ngSwitchCase="'user'" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.5" r="3.2" stroke="currentColor" stroke-width="1.6"/><path d="M5 19c1.2-3.2 4-4.8 7-4.8s5.8 1.6 7 4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <svg *ngSwitchCase="'gear'" viewBox="0 0 24 24" fill="none"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z" stroke="currentColor" stroke-width="1.6"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2.05 2.05 0 1 1-2.9 2.9l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21.1a2.05 2.05 0 0 1-4.1 0v-.1a1.7 1.7 0 0 0-1.11-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2.05 2.05 0 1 1-2.9-2.9l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.03H2.9a2.05 2.05 0 0 1 0-4.1H3a1.7 1.7 0 0 0 1.55-1.11 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2.05 2.05 0 1 1 2.9-2.9l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1.03-1.56V2.9a2.05 2.05 0 0 1 4.1 0V3a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2.05 2.05 0 1 1 2.9 2.9l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.56 1.03h.1a2.05 2.05 0 0 1 0 4.1H21a1.7 1.7 0 0 0-1.56 1.03Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          </span>
+          <span>{{ item.label }}</span>
+        </a>
+        <button class="nav__item nav__item--logout" (click)="logout()">
+          <span class="nav__icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M9 19H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M16 16l4-4-4-4M20 12H9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span>Cerrar sesión</span>
+        </button>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Header -->
+    <header class="topbar">
+      <div class="topbar__page">
+        <span class="topbar__page-icon">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.5" r="3.2" stroke="currentColor" stroke-width="1.6"/><path d="M5 19c1.2-3.2 4-4.8 7-4.8s5.8 1.6 7 4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </span>
+        <div>
+          <h1 class="topbar__title">Cuenta</h1>
+          <p class="topbar__subtitle">Administra tu información personal y tu seguridad</p>
+        </div>
+      </div>
+      <div class="topbar__account">
+        <div class="topbar__account-text">
+          <strong>{{ user?.role === 'admin' ? 'Administrador' : 'Usuario' }}</strong>
+          <span>Mi Cuenta</span>
+        </div>
+        <div class="avatar">{{ (user?.name || 'U').charAt(0) }}</div>
+      </div>
+    </header>
+
+    <div class="content">
+      <section class="row row--account">
+
+        <!-- Columna principal -->
+        <div class="col-main">
+
+          <!-- Información personal -->
+          <article class="panel">
+            <div class="panel__header"><h2>Información personal</h2></div>
+
+            <div class="profile-block">
+              <div class="profile-avatar">
+                <img *ngIf="profile?.user?.avatarUrl" [src]="profile?.user?.avatarUrl" alt="Avatar" />
+                <span *ngIf="!profile?.user?.avatarUrl">{{ (profile?.user?.name || 'U').charAt(0) }}</span>
+              </div>
+
+              <div class="profile-info" *ngIf="!editingName">
+                <div class="profile-info__row">
+                  <strong class="profile-info__name">{{ profile?.user?.name }}</strong>
+                  <button type="button" class="icon-btn" title="Editar nombre" (click)="startEditName()">✎</button>
+                </div>
+                <span class="profile-info__email">{{ profile?.user?.email }}</span>
+                <span class="badge" [class.badge--ok]="profile?.user?.role === 'admin'" [class.badge--category]="profile?.user?.role !== 'admin'">
+                  {{ profile?.user?.role === 'admin' ? 'Administrador' : 'Usuario' }}
+                </span>
+              </div>
+
+              <form class="profile-edit-form" *ngIf="editingName" [formGroup]="nameForm" (ngSubmit)="submitName()">
+                <div class="modal__error-banner" *ngIf="nameError">{{ nameError }}</div>
+                <label class="field">
+                  <span>Nombre completo</span>
+                  <input type="text" formControlName="name" placeholder="Tu nombre" />
+                  <small class="field__error" *ngIf="nf['name'].invalid && nf['name'].touched">El nombre debe tener al menos 3 caracteres.</small>
+                </label>
+                <div class="modal__actions modal__actions--inline">
+                  <button type="button" class="btn-secondary" (click)="cancelEditName()">Cancelar</button>
+                  <button type="submit" class="btn-primary" [disabled]="isSavingName">{{ isSavingName ? 'Guardando...' : 'Guardar' }}</button>
+                </div>
+              </form>
+            </div>
+          </article>
+
+          <!-- Seguridad -->
+          <article class="panel">
+            <div class="panel__header"><h2>Seguridad</h2></div>
+
+            <div class="google-notice" *ngIf="profile && !profile.hasPassword">
+              <span class="google-notice__icon">🔒</span>
+              <p>Tu cuenta usa Google para iniciar sesión, así que no tiene una contraseña propia que cambiar aquí.</p>
+            </div>
+
+            <form class="password-form" *ngIf="profile?.hasPassword" [formGroup]="passwordForm" (ngSubmit)="submitPassword()">
+              <div class="modal__error-banner" *ngIf="passwordError">{{ passwordError }}</div>
+              <div class="modal__success-banner" *ngIf="passwordSuccess">Tu contraseña se actualizó correctamente.</div>
+
+              <label class="field">
+                <span>Contraseña actual</span>
+                <input type="password" formControlName="currentPassword" placeholder="••••••••" />
+                <small class="field__error" *ngIf="pf['currentPassword'].invalid && pf['currentPassword'].touched">Ingresa tu contraseña actual.</small>
+              </label>
+
+              <div class="field-row">
+                <label class="field">
+                  <span>Nueva contraseña</span>
+                  <input type="password" formControlName="newPassword" placeholder="Mínimo 8 caracteres" />
+                  <small class="field__error" *ngIf="pf['newPassword'].invalid && pf['newPassword'].touched">Debe tener al menos 8 caracteres.</small>
+                </label>
+
+                <label class="field">
+                  <span>Confirmar nueva contraseña</span>
+                  <input type="password" formControlName="confirmPassword" placeholder="Repite la contraseña" />
+                  <small class="field__error" *ngIf="passwordForm.errors?.['passwordsMismatch'] && pf['confirmPassword'].touched">Las contraseñas no coinciden.</small>
+                </label>
+              </div>
+
+              <div class="modal__actions modal__actions--inline">
+                <button type="submit" class="btn-primary" [disabled]="isSavingPassword">{{ isSavingPassword ? 'Guardando...' : 'Cambiar contraseña' }}</button>
+              </div>
+            </form>
+          </article>
+
+        </div>
+
+        <!-- Columna lateral -->
+        <div class="col-side">
+          <article class="panel">
+            <div class="panel__header"><h2>Resumen de tu cuenta</h2></div>
+
+            <div class="summary-row">
+              <span class="summary-row__icon">
+                <svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="4.5" width="17" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 9.5h17M8 3v3M16 3v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              </span>
+              <div class="summary-row__body">
+                <span class="summary-row__label">Miembro desde</span>
+                <strong class="summary-row__value">{{ memberSinceLabel }}</strong>
+              </div>
+            </div>
+
+            <div class="summary-row">
+              <span class="summary-row__icon">
+                <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6"/><path d="M9 12.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <div class="summary-row__body">
+                <span class="summary-row__label">Método de acceso</span>
+                <strong class="summary-row__value">{{ profile?.accessMethod }}</strong>
+              </div>
+            </div>
+
+            <div class="summary-row">
+              <span class="summary-row__icon">
+                <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 9h8M8 12.5h8M8 16h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              </span>
+              <div class="summary-row__body">
+                <span class="summary-row__label">Total de transacciones</span>
+                <strong class="summary-row__value">{{ profile?.totalTransacciones }}</strong>
+              </div>
+            </div>
+          </article>
+
+          <div class="tip-banner tip-banner--compact">
+            <span class="tip-banner__icon">💡</span>
+            <div class="tip-banner__text">
+              <p>Mantén tu información actualizada y usa una contraseña segura para proteger tus datos financieros.</p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </div>
+
+</div>

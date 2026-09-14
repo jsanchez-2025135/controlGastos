@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { IncomeService } from '../../core/services/income.service';
@@ -53,6 +53,26 @@ interface GroupSummary {
   percent: number;
 }
 
+// Fecha de HOY en horario LOCAL del usuario, en formato YYYY-MM-DD.
+// OJO: no usar new Date().toISOString() aquí, porque esa convierte a UTC
+// y en Guatemala (UTC-6) puede adelantar la fecha un día durante la tarde/noche.
+function localTodayIso(): string {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+// Validador de formulario: no permite fechas posteriores al día actual.
+// Sí permite hoy o cualquier fecha pasada.
+function noFutureDateValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value) return null;
+    return control.value > localTodayIso() ? { futureDate: true } : null;
+  };
+}
+
 @Component({
   selector: 'app-ingresos',
   standalone: true,
@@ -63,23 +83,26 @@ interface GroupSummary {
 export class IngresosComponent implements OnInit {
   user: ReturnType<AuthService['getUser']>;
 
-  navItems: NavItem[] = [
+      navItems: NavItem[] = [
     { icon: 'grid', label: 'Vista General', route: '/dashboard' },
     { icon: 'in', label: 'Ingresos', active: true, route: '/ingresos' },
-    { icon: 'out', label: 'Egresos' },
-    { icon: 'coffee', label: 'Pequeños Consumos' },
+    { icon: 'out', label: 'Egresos', route: '/egresos' },
+    { icon: 'coffee', label: 'Pequeños Consumos', route: '/pequenos-consumos' },
   ];
-  navItemsSecondary: NavItem[] = [
-    { icon: 'list', label: 'Transacciones' },
-    { icon: 'chart-pie', label: 'Presupuestos' },
+  
+    navItemsSecondary: NavItem[] = [
+    { icon: 'list', label: 'Transacciones', route: '/transacciones' },
+    { icon: 'chart-pie', label: 'Presupuestos', route: '/presupuestos' },
   ];
-  navItemsTertiary: NavItem[] = [
-    { icon: 'chart-bar', label: 'Reportes' },
-    { icon: 'bell', label: 'Notificaciones' },
+  
+    navItemsTertiary: NavItem[] = [
+    { icon: 'chart-bar', label: 'Reportes', route: '/reportes' },
+    { icon: 'bell', label: 'Notificaciones', route: '/notificaciones' },
   ];
-  navItemsAccount: NavItem[] = [
-    { icon: 'user', label: 'Cuenta' },
-    { icon: 'gear', label: 'Ajustes' },
+
+      navItemsAccount: NavItem[] = [
+    { icon: 'user', label: 'Cuenta', route: '/cuenta' },
+    { icon: 'gear', label: 'Ajustes', route: '/ajustes' },
   ];
 
   readonly categoriesByType: Record<'Fijo' | 'Variable', string[]> = {
@@ -245,7 +268,7 @@ verTodosIngresos(): void {
       category: ['Salario', [Validators.required]],
       amount: [null, [Validators.required, Validators.min(0.01)]],
       method: ['Transferencia', [Validators.required]],
-      date: [this.todayIso(), [Validators.required]],
+      date: [this.todayIso(), [Validators.required, noFutureDateValidator()]],
     });
 
     this.incomeForm.get('type')?.valueChanges.subscribe((type: 'Fijo' | 'Variable') => {
@@ -262,7 +285,13 @@ verTodosIngresos(): void {
   }
 
   private todayIso(): string {
-    return new Date().toISOString().slice(0, 10);
+    return localTodayIso();
+  }
+
+  // Usado en el template para poner max="..." en el <input type="date">,
+  // así el selector de fecha del navegador ni siquiera deja elegir un día futuro.
+  get maxDate(): string {
+    return this.todayIso();
   }
 
   loadIncomes(): void {

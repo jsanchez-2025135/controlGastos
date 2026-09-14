@@ -271,3 +271,5 @@
 .quick-actions__list-meta { flex: 1; color: var(--text-muted); font-size: 0.72rem; }
 .quick-actions__list-amount { color: var(--teal); font-weight: 700; white-space: nowrap; }
 .quick-actions__list-empty { color: var(--text-muted); justify-content: center; font-style: italic; }
+
+.avatar--img { object-fit: cover; }

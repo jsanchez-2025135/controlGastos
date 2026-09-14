@@ -1,5 +1,6 @@
 import { incomeRepository } from '../models/income.repository';
 import { Income, IncomeType } from '../models/income.model';
+import { NotificationService } from '@modules/notification/services/notification.service';
 
 interface CreateIncomeDto {
   userId: string;
@@ -13,11 +14,22 @@ interface CreateIncomeDto {
 
 type UpdateIncomeDto = Omit<CreateIncomeDto, 'userId'>;
 
+const todayIso = (): string => {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+};
+
+const isValidDateFormat = (date: string): boolean => /^\d{4}-\d{2}-\d{2}$/.test(date);
+
 const validate = (dto: UpdateIncomeDto): void => {
   if (!dto.title || dto.title.trim().length < 3) throw new Error('TITLE_INVALID');
   if (!dto.amount || dto.amount <= 0) throw new Error('AMOUNT_INVALID');
   if (dto.type !== 'Fijo' && dto.type !== 'Variable') throw new Error('TYPE_INVALID');
-  if (!dto.date) throw new Error('DATE_INVALID');
+  if (!dto.date || !isValidDateFormat(dto.date)) throw new Error('DATE_INVALID');
+  if (dto.date > todayIso()) throw new Error('DATE_FUTURE_NOT_ALLOWED');
 };
 
 export interface IncomeSummary {
@@ -49,7 +61,18 @@ export class IncomeService {
 
   static async create(dto: CreateIncomeDto): Promise<Income> {
     validate(dto);
-    return incomeRepository.create(dto);
+    const income = await incomeRepository.create(dto);
+
+    // Las notificaciones nunca deben tumbar el registro del ingreso: si algo
+    // falla aquí, solo se registra en consola y se sigue de largo.
+    try {
+      await NotificationService.notifyIncome(dto.userId, dto.amount, dto.category);
+      await NotificationService.checkSavingsRate(dto.userId);
+    } catch (error) {
+      console.error('Error generando notificaciones de ingreso', error);
+    }
+
+    return income;
   }
 
   // El repositorio ya filtra por user_id en el UPDATE, pero además revisamos

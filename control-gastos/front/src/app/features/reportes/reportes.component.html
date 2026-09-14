@@ -1,0 +1,297 @@
+<div class="shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="assets/images/Logo-gastos-sinfondo.png" alt="Control de Gastos" class="brand__logo" />
+      <span class="brand__name">Control<br />de gastos</span>
+    </div>
+
+    <nav class="nav">
+      <div class="nav__group">
+        <a *ngFor="let item of navItems" class="nav__item" [routerLink]="item.route ?? null" [class.nav__item--active]="item.active">
+          <span class="nav__icon" [ngSwitch]="item.icon" [class.nav__icon--in]="item.icon === 'in'" [class.nav__icon--out]="item.icon === 'out'" [class.nav__icon--coffee]="item.icon === 'coffee'">
+            <svg *ngSwitchCase="'grid'" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/></svg>
+            <svg *ngSwitchCase="'in'" viewBox="0 0 24 24" fill="none"><path d="M12 6v10M8 12l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg *ngSwitchCase="'out'" viewBox="0 0 24 24" fill="none"><path d="M12 18V8M8 12l4-4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg *ngSwitchCase="'coffee'" viewBox="0 0 24 24" fill="none"><path d="M17.5 9h1a3.2 3.2 0 0 1 0 6.4h-1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M2.5 9h15v6.2a3.6 3.6 0 0 1-3.6 3.6h-7.8A3.6 3.6 0 0 1 2.5 15.2V9Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M6 5.2c0 .8-.9.8-.9 1.6M9.5 5.2c0 .8-.9.8-.9 1.6M13 5.2c0 .8-.9.8-.9 1.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </span>
+          <span>{{ item.label }}</span>
+        </a>
+      </div>
+
+      <div class="nav__divider"></div>
+
+      <div class="nav__group">
+        <a *ngFor="let item of navItemsSecondary" class="nav__item" [routerLink]="item.route ?? null" [class.nav__item--active]="item.active">
+          <span class="nav__icon" [ngSwitch]="item.icon">
+            <svg *ngSwitchCase="'list'" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 9h8M8 12.5h8M8 16h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <svg *ngSwitchCase="'chart-pie'" viewBox="0 0 24 24" fill="none"><path d="M12 3.5A8.5 8.5 0 1 0 20.5 12H12V3.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14.5 3.8A8.52 8.52 0 0 1 20.2 9.5H14.5V3.8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          </span>
+          <span>{{ item.label }}</span>
+        </a>
+      </div>
+
+      <div class="nav__divider"></div>
+
+      <div class="nav__group">
+        <a *ngFor="let item of navItemsTertiary" class="nav__item" [routerLink]="item.route ?? null" [class.nav__item--active]="item.active">
+          <span class="nav__icon" [ngSwitch]="item.icon">
+            <svg *ngSwitchCase="'chart-bar'" viewBox="0 0 24 24" fill="none"><path d="M5 19V10M12 19V5M19 19v-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <svg *ngSwitchCase="'bell'" viewBox="0 0 24 24" fill="none"><path d="M6 10a6 6 0 0 1 12 0v4l1.5 3h-15L6 14v-4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span>
+          <span>{{ item.label }}</span>
+        </a>
+      </div>
+
+      <div class="nav__divider nav__divider--push"></div>
+
+      <div class="nav__group">
+                <a *ngFor="let item of navItemsAccount" class="nav__item" [routerLink]="item.route ?? null" [class.nav__item--active]="item.active">
+          <span class="nav__icon" [ngSwitch]="item.icon">
+            <svg *ngSwitchCase="'user'" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.5" r="3.2" stroke="currentColor" stroke-width="1.6"/><path d="M5 19c1.2-3.2 4-4.8 7-4.8s5.8 1.6 7 4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <svg *ngSwitchCase="'gear'" viewBox="0 0 24 24" fill="none"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z" stroke="currentColor" stroke-width="1.6"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2.05 2.05 0 1 1-2.9 2.9l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21.1a2.05 2.05 0 0 1-4.1 0v-.1a1.7 1.7 0 0 0-1.11-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2.05 2.05 0 1 1-2.9-2.9l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.03H2.9a2.05 2.05 0 0 1 0-4.1H3a1.7 1.7 0 0 0 1.55-1.11 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2.05 2.05 0 1 1 2.9-2.9l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1.03-1.56V2.9a2.05 2.05 0 0 1 4.1 0V3a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2.05 2.05 0 1 1 2.9 2.9l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.56 1.03h.1a2.05 2.05 0 0 1 0 4.1H21a1.7 1.7 0 0 0-1.56 1.03Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          </span>
+          <span>{{ item.label }}</span>
+        </a>
+        <button class="nav__item nav__item--logout" (click)="logout()">
+          <span class="nav__icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M9 19H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M16 16l4-4-4-4M20 12H9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span>Cerrar sesión</span>
+        </button>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Header -->
+    <header class="topbar">
+      <div class="topbar__page">
+        <span class="topbar__page-icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M5 19V10M12 19V5M19 19v-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </span>
+        <div>
+          <h1 class="topbar__title">Reportes</h1>
+          <p class="topbar__subtitle">Analiza tus hábitos de consumo y tu balance mensual</p>
+        </div>
+      </div>
+      <div class="topbar__account">
+        <div class="topbar__account-text">
+          <strong>{{ user?.name || 'Usuario' }}</strong>
+<span>Mi Cuenta</span>
+</div>
+<img *ngIf="user?.avatarUrl" [src]="user?.avatarUrl" alt="Foto de perfil" class="avatar avatar--img" />
+<div *ngIf="!user?.avatarUrl" class="avatar">{{ (user?.name || 'U').charAt(0) }}</div>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- Selector de rango -->
+      <section class="range-bar">
+        <div class="range-bar__dates">
+          <span class="range-bar__icon">📅</span>
+          <div>
+            <span class="range-bar__label">Rango de fechas</span>
+            <strong class="range-bar__value">{{ rangeLabel }}</strong>
+          </div>
+        </div>
+        <div class="range-bar__pills">
+          <button type="button" *ngFor="let opt of rangeOptions" class="range-pill" [class.range-pill--active]="rangeOption === opt.value" (click)="onRangeSelect(opt.value)">{{ opt.label }}</button>
+        </div>
+      </section>
+
+      <!-- Fila 1: 4 KPIs -->
+      <section class="kpi-row">
+        <article class="kpi-card">
+          <div class="kpi-card__icon tone-teal">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5M6 11l6-6 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="kpi-card__body">
+            <p class="kpi-card__label">Total de ingresos</p>
+            <p class="kpi-card__amount">{{ totalIngresos }}</p>
+            <p class="kpi-card__trend" *ngIf="totalIngresosTrend">{{ totalIngresosTrend }}</p>
+          </div>
+        </article>
+
+        <article class="kpi-card">
+          <div class="kpi-card__icon tone-pink">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="kpi-card__body">
+            <p class="kpi-card__label">Total de egresos</p>
+            <p class="kpi-card__amount">{{ totalEgresos }}</p>
+            <p class="kpi-card__trend" *ngIf="totalEgresosTrend">{{ totalEgresosTrend }}</p>
+            <p class="kpi-card__note">(Incluye pequeños consumos)</p>
+          </div>
+        </article>
+
+        <article class="kpi-card">
+          <div class="kpi-card__icon tone-blue">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h11A2.5 2.5 0 0 1 19 7.5V9H5.5A2.5 2.5 0 0 1 3 6.5v1Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><rect x="3" y="9" width="16" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/><circle cx="15" cy="14" r="1.3" fill="currentColor"/></svg>
+          </div>
+          <div class="kpi-card__body">
+            <p class="kpi-card__label">Saldo disponible</p>
+            <p class="kpi-card__amount">{{ saldoDisponible }}</p>
+            <p class="kpi-card__trend" *ngIf="saldoTrend">{{ saldoTrend }}</p>
+          </div>
+        </article>
+
+        <article class="kpi-card">
+          <div class="kpi-card__icon tone-purple">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 9h8M8 12.5h8M8 16h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <div class="kpi-card__body">
+            <p class="kpi-card__label">Total de transacciones</p>
+            <p class="kpi-card__amount">{{ totalTransacciones }}</p>
+            <p class="kpi-card__trend" *ngIf="totalTransaccionesTrend">{{ totalTransaccionesTrend }}</p>
+          </div>
+        </article>
+      </section>
+
+      <!-- Fila 2: evolución + distribución -->
+      <section class="row row--main">
+
+        <article class="panel panel--chart">
+          <div class="panel__header">
+            <h2>Evolución de ingresos y egresos</h2>
+            <div class="chart-legend chart-legend--header">
+              <span class="chart-legend__item"><span class="chart-legend__dot" style="background:#12B5A0"></span> Ingresos</span>
+              <span class="chart-legend__item"><span class="chart-legend__dot" style="background:#EC4899"></span> Egresos</span>
+            </div>
+          </div>
+          <svg class="area-chart" viewBox="0 -10 700 220" preserveAspectRatio="none">
+            <g class="grid-lines">
+              <line x1="56" y1="0" x2="700" y2="0" stroke="#eef0f5" stroke-width="1"/>
+              <line x1="56" y1="50" x2="700" y2="50" stroke="#eef0f5" stroke-width="1"/>
+              <line x1="56" y1="100" x2="700" y2="100" stroke="#eef0f5" stroke-width="1"/>
+              <line x1="56" y1="150" x2="700" y2="150" stroke="#eef0f5" stroke-width="1"/>
+              <line x1="56" y1="200" x2="700" y2="200" stroke="#eef0f5" stroke-width="1"/>
+            </g>
+
+            <text x="46" y="6" text-anchor="end" class="axis-label">{{ yAxisLabels[0] }}</text>
+            <text x="46" y="56" text-anchor="end" class="axis-label">{{ yAxisLabels[1] }}</text>
+            <text x="46" y="106" text-anchor="end" class="axis-label">{{ yAxisLabels[2] }}</text>
+            <text x="46" y="156" text-anchor="end" class="axis-label">{{ yAxisLabels[3] }}</text>
+            <text x="46" y="204" text-anchor="end" class="axis-label">{{ yAxisLabels[4] }}</text>
+
+            <g transform="translate(56, 0)">
+              <path [attr.d]="chartPoints.ingresosArea" fill="url(#areaIngresos)" stroke="none"/>
+              <path [attr.d]="chartPoints.egresosArea" fill="url(#areaEgresos)" stroke="none"/>
+              <path [attr.d]="chartPoints.ingresosLine" fill="none" stroke="#12B5A0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path [attr.d]="chartPoints.egresosLine" fill="none" stroke="#EC4899" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+
+            <defs>
+              <linearGradient id="areaIngresos" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#12B5A0" stop-opacity="0.18"/>
+                <stop offset="100%" stop-color="#12B5A0" stop-opacity="0"/>
+              </linearGradient>
+              <linearGradient id="areaEgresos" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#EC4899" stop-opacity="0.14"/>
+                <stop offset="100%" stop-color="#EC4899" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="x-axis">
+            <span *ngFor="let point of xAxisTicks">{{ point.label }}</span>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel__header"><h2>Distribución de gasto por categoría</h2></div>
+          <div class="donut-block">
+            <div class="donut" [style.background]="donutGradient">
+              <div class="donut__hole">
+                <strong>{{ donutTotal }}</strong>
+                <span>Total gastado</span>
+              </div>
+            </div>
+            <ul class="donut-legend">
+              <li *ngFor="let slice of donutSlices">
+                <div class="donut-legend__top">
+                  <span class="donut-legend__dot" [style.background]="slice.color"></span>
+                  <span class="donut-legend__label">{{ slice.category }}</span>
+                  <span class="donut-legend__percent">{{ slice.percent }}%</span>
+                </div>
+                <span class="donut-legend__amount">{{ slice.amount }}</span>
+              </li>
+            </ul>
+            <p class="empty-state" *ngIf="donutSlices.length === 0">No hay gastos en este rango.</p>
+          </div>
+        </article>
+
+      </section>
+
+      <!-- Fila 3: hábitos de consumo + balance mensual + insights -->
+      <section class="row row--triple">
+
+        <article class="panel">
+          <div class="panel__header">
+            <div>
+              <h2>Hábitos de consumo</h2>
+              <p class="panel__subtitle">¿En qué categorías gastas más?</p>
+            </div>
+          </div>
+          <div class="chart-legend chart-legend--inline">
+            <span class="chart-legend__item"><span class="chart-legend__dot" style="background:#5B4FE8"></span> Este mes</span>
+            <span class="chart-legend__item"><span class="chart-legend__dot" style="background:#d9d5fb"></span> Mes anterior</span>
+          </div>
+          <div class="bars">
+            <div class="bars__row" *ngFor="let row of habitRows">
+              <div class="bars__pair">
+                <span class="bars__bar bars__bar--spent" [style.height.px]="habitBarHeight(row.thisMonth)" [title]="'Este mes: ' + row.thisMonth"></span>
+                <span class="bars__bar bars__bar--budgeted" [style.height.px]="habitBarHeight(row.lastMonth)" [title]="'Mes anterior: ' + row.lastMonth"></span>
+              </div>
+              <span class="bars__label">{{ row.category }}</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel__header">
+            <div>
+              <h2>Balance mensual</h2>
+              <p class="panel__subtitle">Ingresos vs Egresos</p>
+            </div>
+          </div>
+          <div class="chart-legend chart-legend--inline">
+            <span class="chart-legend__item"><span class="chart-legend__dot" style="background:#12B5A0"></span> Ingresos</span>
+            <span class="chart-legend__item"><span class="chart-legend__dot" style="background:#5B4FE8"></span> Egresos</span>
+          </div>
+          <div class="bars bars--balance">
+            <div class="bars__row" *ngFor="let row of balanceRows">
+              <div class="bars__pair">
+                <span class="bars__bar bars__bar--income" [style.height.px]="balanceBarHeight(row.ingresos)" [title]="'Ingresos: ' + row.ingresos"></span>
+                <span class="bars__bar bars__bar--expense" [style.height.px]="balanceBarHeight(row.egresos)" [title]="'Egresos: ' + row.egresos"></span>
+              </div>
+              <span class="bars__label">{{ row.label }}</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel panel--insights">
+          <div class="panel__header"><h2>💡 Insights</h2></div>
+          <div class="insight-list">
+            <div class="insight-card" *ngFor="let insight of insights" [ngClass]="'insight-card--' + insight.tone">
+              <span class="insight-card__icon" [ngSwitch]="insight.icon">
+                <svg *ngSwitchCase="'up'" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M6 11l6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <svg *ngSwitchCase="'down'" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <svg *ngSwitchCase="'check'" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <svg *ngSwitchCase="'target'" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>
+              </span>
+              <p class="insight-card__text">{{ insight.text }}</p>
+            </div>
+            <p class="empty-state" *ngIf="insights.length === 0">Aún no hay suficientes datos para generar insights.</p>
+          </div>
+        </article>
+
+      </section>
+
+    </div>
+  </div>
+
+</div>

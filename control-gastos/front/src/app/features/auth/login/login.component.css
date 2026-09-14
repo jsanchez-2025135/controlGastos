@@ -334,3 +334,27 @@
     padding: 3rem 2rem;
   }
 }
+
+.hud-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0 16px;
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.hud-divider::before,
+.hud-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(244, 248, 252, 0.15);
+}
+
+.google-btn-wrapper {
+  display: flex;
+  justify-content: center;
+}

@@ -342,3 +342,5 @@
 }
 
 .axis-label { font-size: 10px; fill: #9aa0af; font-family: 'Inter', sans-serif; }
+
+.avatar--img { object-fit: cover; }

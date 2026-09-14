@@ -23,7 +23,7 @@
       <div class="nav__divider"></div>
 
       <div class="nav__group">
-        <a *ngFor="let item of navItemsSecondary" class="nav__item">
+        <a *ngFor="let item of navItemsSecondary" class="nav__item" [routerLink]="item.route ?? null" [class.nav__item--active]="item.active">
           <span class="nav__icon" [ngSwitch]="item.icon">
             <svg *ngSwitchCase="'list'" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 9h8M8 12.5h8M8 16h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
             <svg *ngSwitchCase="'chart-pie'" viewBox="0 0 24 24" fill="none"><path d="M12 3.5A8.5 8.5 0 1 0 20.5 12H12V3.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14.5 3.8A8.52 8.52 0 0 1 20.2 9.5H14.5V3.8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
@@ -35,7 +35,7 @@
       <div class="nav__divider"></div>
 
       <div class="nav__group">
-        <a *ngFor="let item of navItemsTertiary" class="nav__item">
+              <a *ngFor="let item of navItemsTertiary" class="nav__item" [routerLink]="item.route ?? null" [class.nav__item--active]="item.active">
           <span class="nav__icon" [ngSwitch]="item.icon">
             <svg *ngSwitchCase="'chart-bar'" viewBox="0 0 24 24" fill="none"><path d="M5 19V10M12 19V5M19 19v-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
             <svg *ngSwitchCase="'bell'" viewBox="0 0 24 24" fill="none"><path d="M6 10a6 6 0 0 1 12 0v4l1.5 3h-15L6 14v-4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
@@ -47,7 +47,7 @@
       <div class="nav__divider nav__divider--push"></div>
 
       <div class="nav__group">
-        <a *ngFor="let item of navItemsAccount" class="nav__item">
+               <a *ngFor="let item of navItemsAccount" class="nav__item" [routerLink]="item.route ?? null" [class.nav__item--active]="item.active">
           <span class="nav__icon" [ngSwitch]="item.icon">
             <svg *ngSwitchCase="'user'" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.5" r="3.2" stroke="currentColor" stroke-width="1.6"/><path d="M5 19c1.2-3.2 4-4.8 7-4.8s5.8 1.6 7 4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
             <svg *ngSwitchCase="'gear'" viewBox="0 0 24 24" fill="none"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z" stroke="currentColor" stroke-width="1.6"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2.05 2.05 0 1 1-2.9 2.9l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21.1a2.05 2.05 0 0 1-4.1 0v-.1a1.7 1.7 0 0 0-1.11-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2.05 2.05 0 1 1-2.9-2.9l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.03H2.9a2.05 2.05 0 0 1 0-4.1H3a1.7 1.7 0 0 0 1.55-1.11 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2.05 2.05 0 1 1 2.9-2.9l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1.03-1.56V2.9a2.05 2.05 0 0 1 4.1 0V3a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2.05 2.05 0 1 1 2.9 2.9l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.56 1.03h.1a2.05 2.05 0 0 1 0 4.1H21a1.7 1.7 0 0 0-1.56 1.03Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
@@ -72,10 +72,11 @@
       <h1 class="topbar__title">Bienvenido, {{ user?.name || 'usuario' }}</h1>
       <div class="topbar__account">
         <div class="topbar__account-text">
-          <strong>{{ user?.role === 'admin' ? 'Administrador' : 'Usuario' }}</strong>
-          <span>Mi Cuenta</span>
-        </div>
-        <div class="avatar">{{ (user?.name || 'U').charAt(0) }}</div>
+          <strong>{{ user?.name || 'Usuario' }}</strong>
+<span>Mi Cuenta</span>
+</div>
+<img *ngIf="user?.avatarUrl" [src]="user?.avatarUrl" alt="Foto de perfil" class="avatar avatar--img" />
+<div *ngIf="!user?.avatarUrl" class="avatar">{{ (user?.name || 'U').charAt(0) }}</div>
       </div>
     </header>
 
@@ -121,10 +122,10 @@
               <line x1="40" y1="185" x2="700" y2="185" stroke="#eef0f5" stroke-width="1"/>
               <line x1="40" y1="240" x2="700" y2="240" stroke="#eef0f5" stroke-width="1"/>
             </g>
-            <text x="8" y="24" class="axis-label">Q 10,000</text>
-            <text x="16" y="79" class="axis-label">Q 7,500</text>
-            <text x="16" y="134" class="axis-label">Q 5,000</text>
-            <text x="16" y="189" class="axis-label">Q 2,500</text>
+                        <text x="8" y="24" class="axis-label">{{ 'Q ' + chartPoints.maxValue.toLocaleString('es-GT') }}</text>
+            <text x="16" y="79" class="axis-label">{{ 'Q ' + (chartPoints.maxValue * 0.75).toLocaleString('es-GT') }}</text>
+            <text x="16" y="134" class="axis-label">{{ 'Q ' + (chartPoints.maxValue * 0.5).toLocaleString('es-GT') }}</text>
+            <text x="16" y="189" class="axis-label">{{ 'Q ' + (chartPoints.maxValue * 0.25).toLocaleString('es-GT') }}</text>
             <text x="30" y="244" class="axis-label">Q 0</text>
 
             <g [attr.transform]="'translate(50, 20) scale(1, 1)'">
@@ -146,7 +147,7 @@
         <article class="panel panel--transactions">
           <div class="panel__header">
             <h2>Últimas transacciones</h2>
-            <a class="panel__link">Ver todas</a>
+            <a class="panel__link" routerLink="/transacciones">Ver todas</a>
           </div>
           <ul class="tx-list" *ngIf="transactions.length > 0">
             <li class="tx-row" *ngFor="let tx of transactions">
@@ -166,7 +167,7 @@
             </li>
           </ul>
           <p class="empty-state" *ngIf="transactions.length === 0">Aún no tienes transacciones registradas.</p>
-          <a class="panel__footer-link">Ver todas las transacciones →</a>
+          <a class="panel__footer-link" routerLink="/transacciones">Ver todas las transacciones →</a>
         </article>
 
       </section>
@@ -194,7 +195,7 @@
               </li>
             </ul>
           </div>
-          <a class="panel__footer-link">Ver reporte completo →</a>
+          <a class="panel__footer-link" routerLink="/reportes">Ver reporte completo →</a>
         </article>
 
         <article class="panel">
@@ -214,7 +215,7 @@
             </li>
           </ul>
           <p class="empty-state" *ngIf="frequentConsumptions.length === 0">Aún no tienes pequeños consumos registrados.</p>
-          <a class="panel__footer-link">Ver todos los pequeños consumos →</a>
+          <a class="panel__footer-link" routerLink="/pequenos-consumos">Ver todos los pequeños consumos →</a>
         </article>
 
       </section>

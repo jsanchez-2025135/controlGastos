@@ -31,6 +31,9 @@ export class IncomeController {
 
       return created(res, income, 'Ingreso registrado');
     } catch (error) {
+      if (error instanceof Error && error.message === 'DATE_FUTURE_NOT_ALLOWED') {
+        return badRequest(res, 'No puedes registrar un ingreso con fecha futura');
+      }
       if (error instanceof Error && ['TITLE_INVALID', 'AMOUNT_INVALID', 'TYPE_INVALID', 'DATE_INVALID'].includes(error.message)) {
         return badRequest(res, 'Datos del ingreso inválidos');
       }
@@ -56,6 +59,9 @@ export class IncomeController {
 
       return ok(res, income, 'Ingreso actualizado');
     } catch (error) {
+      if (error instanceof Error && error.message === 'DATE_FUTURE_NOT_ALLOWED') {
+        return badRequest(res, 'No puedes registrar un ingreso con fecha futura');
+      }
       if (error instanceof Error && ['TITLE_INVALID', 'AMOUNT_INVALID', 'TYPE_INVALID', 'DATE_INVALID'].includes(error.message)) {
         return badRequest(res, 'Datos del ingreso inválidos');
       }
