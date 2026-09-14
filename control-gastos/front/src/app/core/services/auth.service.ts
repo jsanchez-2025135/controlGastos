@@ -42,6 +42,11 @@ export class AuthService {
 updateStoredUser(user: AuthUser): void {
     localStorage.setItem(USER_KEY, JSON.stringify(user));
   }
+
+  refreshToken(newToken: string): void {
+    localStorage.setItem(TOKEN_KEY, newToken);
+    this.scheduleExpirationFor(newToken);
+}
   
   logout(): void {
     localStorage.removeItem(TOKEN_KEY);

@@ -18,7 +18,7 @@ import settingsRoutes from './modules/settings/routes/settings.routes';
  */
 const app: Application = express();
 
-app.use(cors());
+app.use(cors({ exposedHeaders: ['X-New-Token'] }));
 app.use(express.json());
 
 // Healthcheck
