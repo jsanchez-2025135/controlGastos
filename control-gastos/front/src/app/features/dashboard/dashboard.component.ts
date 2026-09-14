@@ -83,11 +83,11 @@ export class DashboardComponent implements OnInit {
     { icon: 'chart-pie', label: 'Presupuestos', route: '/presupuestos' },
   ];
 
-  navItemsTertiary: NavItem[] = [
-    { icon: 'chart-bar', label: 'Reportes' },
+    navItemsTertiary: NavItem[] = [
+    { icon: 'chart-bar', label: 'Reportes', route: '/reportes' },
     { icon: 'bell', label: 'Notificaciones' },
   ];
-
+  
   navItemsAccount: NavItem[] = [
     { icon: 'user', label: 'Cuenta' },
     { icon: 'gear', label: 'Ajustes' },
